@@ -1,0 +1,174 @@
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Formulario de Solicitud</title>
+  </head>
+  <body>
+    <!-- Menú -->
+      {{> menu-solic }}
+
+    <section class="section">
+      <div class="container">
+        <h1 class="title" id="form-title">Formulario de Solicitud</h1>
+
+        <div id="formulario" class="box">
+          <form id="solicitud-form">
+            <!-- Campo ID (solo visible en edición) -->
+            <fieldset disabled>
+              <div class="field is-horizontal">
+                <div class="field-label is-normal">
+                  <label class="label">ID</label>
+                </div>
+                <div class="field-body">
+                  <div class="field">
+                    <div class="control">
+                      <input class="input" id="solicitud-id" type="text" placeholder="ID domicilio" value="{{idDomicilio}}">
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </fieldset>
+
+            <!-- Destinatario -->
+            <div class="field is-horizontal">
+              <div class="field-label is-normal">
+                <label class="label">Destinatario</label>
+              </div>
+              <div class="field-body">
+                <div class="field is-narrow">
+                  <div class="control">
+                    <div class="select">
+                      <select id="solicitud-destinatario"></select>
+                    </div>
+                  </div>
+                  <p class="help">Este campo es requerido</p>
+                </div>
+              </div>
+            </div>
+
+            <!-- Dirección -->
+            <div class="field is-horizontal">
+              <div class="field-label is-normal">
+                <label class="label">Dirección</label>
+              </div>
+              <div class="field-body">
+                <div class="field">
+                  <div class="control">
+                    <input class="input" id="solicitud-direccion" type="text" placeholder="Dirección">
+                  </div>
+                  <p class="help">Este campo es requerido</p>
+                </div>
+              </div>
+            </div>
+
+            <!-- Barrio -->
+            <div class="field is-horizontal">
+              <div class="field-label is-normal">
+                <label class="label">Barrio</label>
+              </div>
+              <div class="field-body">
+                <div class="field is-narrow">
+                  <div class="control">
+                    <div class="select">
+                      <select id="solicitud-municipio">
+                        <!-- Acá se cargarán dinámicamente los municipios -->
+                      </select>
+                    </div>
+                  </div>
+                  <p class="help">Seleccione el Municipio</p>
+                </div>
+
+                <div class="field is-narrow">
+                  <div class="control">
+                    <div class="select is-fullwidth">
+                      <select id="solicitud-barrio">
+                        <!-- Acá se cargarán dinámicamente los barrios de un municipio -->
+                      </select>
+                    </div>
+                  </div>
+                  <p class="help">Seleccione el Barrio</p>
+                </div>
+              </div>
+            </div>
+
+            <!-- Teléfono -->
+            <div class="field is-horizontal">
+              <div class="field-label is-normal">
+                <label class="label">Teléfono</label>
+              </div>
+              <div class="field-body">
+                <div class="field">
+                  <div class="control">
+                    <input class="input" id="solicitud-telefono" type="text" placeholder="Teléfono">
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Actividad -->
+            <div class="field is-horizontal">
+              <div class="field-label is-normal">
+                <label class="label">Actividad</label>
+              </div>
+              <div class="field-body">
+                <div class="field is-narrow">
+                  <div class="control">
+                    <div class="select">
+                      <select id="solicitud-actividad">
+                        <!-- Acá se cargarán dinámicamente las actividades -->
+                      </select>
+                    </div>
+                  </div>
+                  <p class="help">Este campo es requerido</p>
+                </div>
+              </div>
+            </div>
+
+            <!-- Instrucciones -->
+            <div class="field is-horizontal">
+              <div class="field-label is-normal">
+                <label class="label">Instrucciones</label>
+              </div>
+              <div class="field-body">
+                <div class="field">
+                  <div class="control">
+                    <textarea class="textarea" id="solicitud-instrucciones" placeholder="Instrucciones"></textarea>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Botones de acción -->
+            <div class="field is-grouped is-grouped-centered">
+              <p class="control">
+                <button class="button is-primary" id="submit-button">
+                  Crear Solicitud
+                </button>
+              </p>
+              <p class="control">
+                <a class="button is-light" href="/solicitudes/lista-solicitudes">
+                  Cancelar
+                </a>
+              </p>
+            </div>
+          </form>
+        </div>
+      </div>
+    </section>
+    <!-- src/views/solicitudes/form-solicitudes.hbs -->
+    <script>
+      const userId = {{{jsonify userId}}}; // ID del usuario autenticado
+    </script>
+    <script type="module" src="/js/form-solicitudes.js"></script>
+  </body>
+</html>
+
+    {{!-- <script> EN ESTE SCRIPT SE PIDEN LOS DATOS AL SERVER PARA QUE QUEDEN DISPONIBLES PARA EL .js *** funciona para handlebars
+      // Datos iniciales (si es edición)
+      const initialData = {{{jsonify solicitud}}}; // Usar triple mustache para evitar escaping de comillas
+
+      // Datos para selects
+      const actividades = {{{jsonify actividades}}};
+      const destinatarios = {{{jsonify destinatarios}}};
+    </script> --}}

@@ -1,0 +1,222 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model con_centroscosto {
+  cctId Int @id @default(autoincrement())
+  cctCodigo String @unique @db.Char(3)
+  cctCodUEN String @db.Char(5)
+  cctNombreCC String @db.VarChar(30)
+  // relaciones
+  gestiones dom_gestion[]
+  uen gen_uen @relation(fields: [cctCodUEN], references: [uenCodigo])
+}
+
+model dom_actividades {
+  dacId Int @id @default(autoincrement())
+  dacCodigo String @unique @db.Char(3)
+  dacDescripcion String @db.VarChar(50)
+  // relaciones
+  solicitudes dom_solicitudes[]
+}
+
+model dom_destinatarios {
+  ddtId Int @id @default(autoincrement())
+  ddtNombre String @db.VarChar(50) @unique
+  ddtCodBarrio String @db.Char(5)
+  ddtDireccion String @db.VarChar(80)
+  ddtTelefono String? @db.VarChar(80)
+  // relaciones
+  solicitudes dom_solicitudes[]
+  barrio gen_barrios @relation(fields: [ddtCodBarrio], references: [gbrCodigo])
+}
+
+model dom_mensajeros {
+  msjId Int @id @default(autoincrement())
+  msjCodigo BigInt @unique
+  msjNombre String @db.VarChar(50)
+  msjDireccion String? @db.VarChar(80)
+  msjTelefono String? @db.VarChar(30)
+  msjEmail String? @db.VarChar(100)
+  // relaciones
+  gestiones dom_gestion[]
+}
+
+model dom_domicilios {
+  domId Int @id @default(autoincrement())
+  domCodUsuario String @db.VarChar(50)
+  domCodActividad String @db.Char(3)
+  domCodCentroC String @db.Char(3)
+  domCodMensajero BigInt @db.BigInt
+  domCodDestinatario Int? @db.Int
+  domDestinatario String @db.VarChar(50)
+  domDireccion String @db.VarChar(80)
+  domCodBarrio String @db.Char(5)
+  domTelefono String? @db.VarChar(80)
+  domInstrucciones String? @db.VarChar(500)
+  domValor Decimal? @db.Decimal(10,2)
+  domVrAdicional Decimal? @db.Decimal(10,2)
+  domFchSolicitud DateTime
+  domFchEntrega DateTime?
+  domCodEstado String @db.Char(3)
+}
+
+model dom_solicitudes {
+  dsoId Int @id @default(autoincrement())
+  dsoCodUsuario String @db.VarChar(50)
+  dsoCodActividad String @db.Char(3)
+  dsoCodDestinatario Int @db.Int
+  dsoCodEstado String @db.Char(3)
+  dsoCodBarrio String @db.Char(5)
+  dsoDireccion String @db.VarChar(80)
+  dsoTelefono String? @db.VarChar(80)
+  dsoInstrucciones String? @db.VarChar(500)
+  dsoFchSolicitud DateTime
+  // relaciones
+  usuario gen_usuarios @relation(fields: [dsoCodUsuario], references: [usuUsuario])
+  destinatario dom_destinatarios @relation(fields: [dsoCodDestinatario], references: [ddtId])
+  barrio gen_barrios @relation(fields: [dsoCodBarrio], references: [gbrCodigo])
+  actividad dom_actividades @relation(fields: [dsoCodActividad], references: [dacCodigo])
+  estado enum_estados @relation(fields: [dsoCodEstado], references: [eneCodigo])
+  gestion dom_gestion[]
+}
+
+model dom_gestion {
+  dgoId Int @id @default(autoincrement())
+  dgoCodSolicitud Int
+  dgoCodCentroC String @db.Char(3)
+  dgoCodMensajero BigInt @db.BigInt
+  dgoValor Decimal? @db.Decimal(10,2)
+  dgoVrAdicional Decimal? @db.Decimal(10,2)
+  dgoFchEntrega DateTime?
+  // relaciones
+  centroscosto con_centroscosto @relation(fields: [dgoCodCentroC], references: [cctCodigo])
+  mensajero dom_mensajeros @relation(fields: [dgoCodMensajero], references: [msjCodigo])
+  solicitud dom_solicitudes @relation(fields: [dgoCodSolicitud], references: [dsoId], onDelete: Cascade)
+}
+
+model enum_estados {
+  eneId Int @id @default(autoincrement())
+  eneCodigo String @unique @db.Char(2)
+  eneEstado String @db.VarChar(15)
+  eneOP String @db.Char(1)
+  eneDESP String @db.Char(1)
+  eneOS String @db.Char(1)
+  enePED String @db.Char(1)
+  eneTRAB String @db.Char(1)
+  eneICB String @db.Char(1)
+  eneDOM String @db.Char(1)
+  eneEMBG String @db.Char(1)
+  // relaciones
+  solicitudes dom_solicitudes[]
+}
+
+model gen_aplicaciones {
+  appId Int @id @default(autoincrement())
+  appCodigo String @unique @db.Char(5)
+  appDescripcion String @db.VarChar(100)
+  appTitulo String @db.VarChar(50)
+  appUrl String? @db.VarChar(100)
+  appEjecutable String? @db.VarChar(100)
+  appIcono String? @db.VarChar(100)
+  appEstado String @db.VarChar(10)
+  // relaciones
+  rolesapp gen_rolesapp[]
+}
+
+model gen_barrios {
+  gbrId Int @id @default(autoincrement())
+  gbrCodigo String @unique @db.Char(5)
+  gbrCodCiudad String @db.Char(6)
+  gbrNombre String @db.VarChar(50)
+  gbrCodComuna String @db.Char(3)
+  gbrCodPostal String @db.Char(7)
+  gbrValor Decimal @db.Decimal(10,2)
+  // relaciones
+  destinatarios dom_destinatarios[]
+  solicitudes dom_solicitudes[]
+  ciudades gen_ciudades @relation(fields: [gbrCodCiudad], references: [ciuCodigo])
+}
+
+model gen_ciudades {
+  ciuId Int @id @default(autoincrement())
+  ciuCodigo String @unique @db.Char(6)
+  ciuNombre String @db.VarChar(30)
+  ciuCodDepartamento String @db.Char(6)
+  ciuCodPais String @db.Char(2)
+  // relaciones
+  departamentos gen_departamentos @relation(fields: [ciuCodDepartamento], references: [dptCodigo])
+  pais gen_paises @relation(fields: [ciuCodPais], references: [paiCodigoISO])
+  barrios gen_barrios[]
+}
+
+model gen_departamentos {
+  dptId Int @id @default(autoincrement())
+  dptCodigo String @unique @db.Char(6)
+  dptNombre String @db.VarChar(30)
+  // relaciones
+  ciudades gen_ciudades[]
+}
+
+model gen_paises {
+  paiId Int @id @default(autoincrement())
+  paiCodigoISO String @unique @db.Char(2)
+  paiNombre String @db.VarChar(80)
+  // relaciones
+  ciudades gen_ciudades[]
+}
+
+model gen_roles {
+  rolId Int @id @default(autoincrement())
+  rolCodigo String @unique @db.Char(3)
+  rolDescripcion String @db.VarChar(100)
+  // relaciones
+  rolesapp gen_rolesapp[]
+}
+
+model gen_rolesapp {
+  rapId Int @id @default(autoincrement())
+  rapCodUsuario String @db.VarChar(50)
+  rapCodApp String @db.Char(5)
+  rapCodRol String @db.Char(3)
+  rapCodUEN String @db.Char(5)
+  // relaciones
+  usuarios gen_usuarios @relation(fields: [rapCodUsuario], references: [usuUsuario])
+  aplicaciones gen_aplicaciones @relation(fields: [rapCodApp], references: [appCodigo])
+  roles gen_roles @relation(fields: [rapCodRol], references: [rolCodigo])
+  uen gen_uen @relation(fields: [rapCodUEN], references: [uenCodigo])
+}
+
+model gen_uen {
+  uenId Int @id @default(autoincrement())
+  uenCodigo String @unique @db.Char(5)
+  uenNombre String @db.VarChar(50)
+  // relaciones
+  centroscosto con_centroscosto[]
+  rolesapp gen_rolesapp[]
+}
+
+model gen_usuarios {
+  usuId Int @id @default(autoincrement())
+  usuUsuario String @unique @db.VarChar(50)
+  usuClave String @db.VarChar(50)
+  usuNombre String @db.VarChar(50)
+  usuEmail String @db.VarChar(100)
+  usuTipoUsuario String @db.Char(1)
+  usuFchUltIngreso DateTime
+  usuEstado String @db.VarChar(10)
+  // relaciones
+  solicitudes dom_solicitudes[]
+  rolesapp gen_rolesapp[]
+}

@@ -1,0 +1,61 @@
+<!-- src/views/solicitudes/lista-destinatarios.hbs -->
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Destinatarios</title>
+</head>
+<body>
+  <!-- Menú -->
+  {{> menu-solic }}
+
+  <section class="section">
+    <div class="container">
+      <h1 class="title">Destinatarios</h1>
+
+      <!-- Búsqueda de destinatarios -->
+      <div class="field has-addons">
+        <div class="control">
+          <input id="search-input" class="input" type="text" placeholder="Buscar destinatario...">
+        </div>
+        <div class="control">
+          <button id="search-button" class="button is-primary">Buscar</button>
+        </div>
+      </div>
+
+      <!-- Tabla de Destinatarios -->
+      <table class="table is-hoverable is-fullwidth">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Nombre</th>
+            <th>Dirección</th>
+            <th>Barrio</th>
+            <th>Teléfono</th>
+            <th>Acciones</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody id="destinatarios-table-body">
+          <!-- Las filas se cargarán dinámicamente -->
+        </tbody>
+      </table>
+
+      <!-- Paginación -->
+      <nav class="pagination is-centered" role="navigation" aria-label="pagination">
+        <a id="prev-page" class="pagination-previous">Página Anterior</a>
+        <a id="next-page" class="pagination-next">Página Siguiente</a>
+        <span id="pagination-info" class="pagination-info"></span>
+      </nav>
+    </div>
+
+    <!-- Botón Destacado -->
+    <div class="has-text-centered">
+      <a href="/destinatarios/form-destinatarios" class="button is-primary is-large">Nuevo Destinatario</a>
+    </div>
+  </section>
+
+  <script type="module" src="/js/lista-destinatarios.js"></script>
+</body>
+</html>

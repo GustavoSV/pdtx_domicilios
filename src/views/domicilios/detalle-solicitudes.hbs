@@ -1,0 +1,134 @@
+<!-- src/views/domicilios/solic-detalle.hbs -->
+
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Detalles del Domicilio</title>
+    {{! <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css"> }}
+  </head>
+  <body>
+    <!-- Menú -->
+    {{> menu-solic }}
+
+    <section class="section">
+      <div class="container">
+        <h1 class="title">Detalles del Domicilio</h1>
+
+        <!-- Información del Domicilio -->
+        <div class="box">
+          <table class="table is-striped">
+            <tbody>
+              <tr>
+                <th>ID</th>
+                <td>{{domicilio.dsoId}}</td>
+              </tr>
+              <tr>
+                <th>Estado</th>
+                <td>{{domicilio.estado.eneEstado}}</td>
+              </tr>
+              <tr>
+                <th>Actividad</th>
+                <td>{{domicilio.actividad.dacDescripcion}}</td>
+              </tr>
+              <tr>
+                <th>Destinatario</th>
+                <td>{{domicilio.destinatario.ddtNombre}}</td>
+              </tr>
+              <tr>
+                <th>Dirección</th>
+                <td>{{domicilio.dsoDireccion}}</td>
+              </tr>
+              <tr>
+                <th>Barrio</th>
+                <td>{{domicilio.barrio.gbrNombre}}</td>
+              </tr>
+              <tr>
+                <th>Teléfono</th>
+                <td>{{domicilio.dsoTelefono}}</td>
+              </tr>
+              <tr>
+                <th>Instrucciones</th>
+                <td>{{domicilio.dsoInstrucciones}}</td>
+              </tr>
+              <tr>
+                <th>Fecha de Solicitud</th>
+                <td>
+                  <span
+                    class="fechas"
+                    data-fecha="{{domicilio.dsoFchSolicitud}}"
+                  ></span>
+                </td>
+              </tr>
+              <tr>
+                <th>Fecha de Entrega</th>
+                <td>
+                  <span
+                    class="fechas"
+                    data-fecha="{{domicilio.dataGestion.dgoFchEntrega}}"
+                  ></span>
+                </td>
+              </tr>
+              <tr>
+                <th>Mensajero</th>
+                <td>{{domicilio.dataGestion.mensajero.msjNombre}}</td>
+              </tr>
+              <tr>
+                <th>Valor</th>
+                <td>{{domicilio.dataGestion.dgoValor}}</td>
+              </tr>
+              <tr>
+                <th>Vr adicional</th>
+                <td>{{domicilio.dataGestion.dgoVrAdicional}}</td>
+              </tr>
+              <tr>
+                <th>Centro de costos</th>
+                <td>
+                  {{domicilio.dataGestion.centroscosto.cctCodUEN}}
+                  -
+                  {{domicilio.dataGestion.centroscosto.cctNombreCC}}
+                </td>
+              </tr>
+            </tbody>
+          </table>
+
+          <!-- Botón para editar -->  
+          <a id="buttonEditar"
+            href="/solicitudes/form-solicitudes/{{domicilio.dsoId}}"
+            class="button is-warning"
+            data-estado="{{domicilio.dsoCodEstado}}"
+          >Editar</a>
+
+        <!-- Botón para regresar -->
+        <a href="javascript:history.back()" class="button is-primary">Regresar</a>
+      </div>
+
+      <table class="table is-hoverable">
+        <thead>
+          <tr>
+            <th>Col 1</th>
+            <th>Col 2</th>
+            <th>Col 3</th>
+          </tr>
+        <tbody>
+          <tr>
+            <td>Two</td>
+            <td>Four</td>
+            <td>Five</td>
+          </tr>
+          <tr>
+            <td>Three</td>
+            <td>Four</td>
+            <td>Five</td>
+          </tr>
+          <tr>
+            <td>Two</td>
+            <td>Four</td>
+            <td>Five</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+    <script type="module" src="/js/detalle-solicitudes.js"></script>
+  </body>
+</html>

@@ -1,0 +1,102 @@
+<!-- src/views/domicilios/inicio-solicitante.hbs -->
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Inicio - Solicitante</title>
+  {{!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css"> --}}
+</head>
+<body>
+  <!-- Menú -->
+  {{> menu-solic }}
+
+  <!-- Contenido Principal -->
+  <section class="section">
+    <div class="container">
+      <!-- Encabezado -->
+      <h1 class="title">¡Hola, {{user.username}}!</h1>
+
+      <!-- Resumen de Solicitudes -->
+      <div class="columns">
+        <!-- Solicitudes Activas -->
+        <div class="column">
+          <div class="card">
+            <header class="card-header">
+              <p class="card-header-title">Solicitudes Activas ({{solicitudesActivas.length}})</p>
+            </header>
+            <div class="card-content">
+              <table class="table is-hoverable">
+                <thead>
+                  <tr>
+                    <th>ID</th>
+                    <th>Destinatario</th>
+                    <th>Estado</th>
+                    <th>Detalle</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {{#each solicitudesActivas}}
+                    <tr>
+                      <td>{{this.dsoId}}</td>
+                      <td>{{this.destinatario.ddtNombre}}</td>
+                      <td>{{this.estado.eneEstado}}</td>
+                      <td class="has-text-centered">
+                        <a href="/solicitudes/detalle-solicitudes/{{this.dsoId}}" class="has-text-primary" title="Ver detalles">
+                          <i class="fas fa-arrow-right"></i>
+                        </a>
+                      </td>
+                    </tr>
+                  {{/each}}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- Últimas Solicitudes Completadas -->
+        <div class="column">
+          <div class="card">
+            <header class="card-header">
+              <p class="card-header-title">Últimas Solicitudes Completadas</p>
+            </header>
+            <div class="card-content">
+              <table class="table is-hoverable">
+                <thead>
+                  <tr>
+                    <th>ID</th>
+                    <th>Destinatario</th>
+                    <th>Fecha de Entrega</th>
+                    <th>Detalle</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {{#each solicitudesCompletadas}}
+                    <tr>
+                      <td>{{this.dsoId}}</td>
+                      <td>{{this.destinatario.ddtNombre}}</td>
+                      <td>
+                        <span class="fecha-entrega" data-fecha="{{this.dataGestion.dgoFchEntrega}}"></span>
+                      </td>
+                      <td class="has-text-centered">
+                        <a href="/solicitudes/detalle-solicitudes/{{this.dsoId}}" class="has-text-primary" title="Ver detalles">
+                          <i class="fas fa-arrow-right"></i>
+                        </a>
+                    </tr>
+                  {{/each}}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Botón Destacado -->
+      <div class="has-text-centered">
+        <a href="/solicitudes/form-solicitudes" class="button is-primary is-large">Solicitar Domicilio</a>
+      </div>
+    </div>
+  </section>
+  <script type="module" src="/js/home-solicitudes.js"></script>
+</body>
+</html>

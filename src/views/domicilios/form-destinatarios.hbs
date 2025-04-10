@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Formulario Destinatario</title>
+</head>
+<body>
+  <!-- Menú -->
+    {{> menu-solic }}
+
+    <section class="section">
+      <div class="container">
+        <h1 class="title" id="form-title">Formulario Destinatario</h1>
+
+        <div id="formulario" class="box">
+          <form id="destinatario-form">
+
+            <!-- Campo ID (solo visible en edición) -->
+            <fieldset disabled>
+              <div class="field is-horizontal">
+                <div class="field-label is-normal">
+                  <label class="label">ID</label>
+                </div>
+                <div class="field-body">
+                  <div class="field">
+                    <div class="control">
+                      <input class="input" id="destinatario-id" type="text" placeholder="ID Destinatario" value="{{idDestinatario}}">
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </fieldset>
+
+            <!-- Nombre -->
+            <div class="field is-horizontal">
+              <div class="field-label is-normal">
+                <label class="label">Nombre</label>
+              </div>
+              <div class="field-body">
+                <div class="field">
+                  <div class="control">
+                    <input class="input" id="destinatario-nombre" type="text" placeholder="Nombre">
+                  </div>
+                  <p class="help">Este campo es requerido</p>
+                </div>
+              </div>
+            </div>
+
+            <!-- Dirección -->
+            <div class="field is-horizontal">
+              <div class="field-label is-normal">
+                <label class="label">Dirección</label>
+              </div>
+              <div class="field-body">
+                <div class="field">
+                  <div class="control">
+                    <input class="input" id="destinatario-direccion" type="text" placeholder="Dirección">
+                  </div>
+                  <p class="help">Este campo es requerido</p>
+                </div>
+              </div>
+            </div>
+
+            <!-- Barrio -->
+            <div class="field is-horizontal">
+              <div class="field-label is-normal">
+                <label class="label">Barrio</label>
+              </div>
+              <div class="field-body">
+                <div class="field is-narrow">
+                  <div class="control">
+                    <div class="select">
+                      <select id="destinatario-municipio">
+                        <!-- Acá se cargarán dinámicamente los municipios -->
+                      </select>
+                    </div>
+                  </div>
+                  <p class="help">Seleccione el Municipio</p>
+                </div>
+
+                <div class="field is-narrow">
+                  <div class="control">
+                    <div class="select is-fullwidth">
+                      <select id="destinatario-barrio">
+                        <!-- Acá se cargarán dinámicamente los barrios de un municipio -->
+                      </select>
+                    </div>
+                  </div>
+                  <p class="help">Seleccione el Barrio</p>
+                </div>
+              </div>
+            </div>
+
+            <!-- Teléfono -->
+            <div class="field is-horizontal">
+              <div class="field-label is-normal">
+                <label class="label">Teléfono</label>
+              </div>
+              <div class="field-body">
+                <div class="field">
+                  <div class="control">
+                    <input class="input" id="destinatario-telefono" type="text" placeholder="Teléfono">
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Botones de acción -->
+            <div class="field is-grouped is-grouped-centered">
+              <p class="control">
+                <button class="button is-primary" id="submit-button">
+                  Crear Destinatario
+                </button>
+              </p>
+              <p class="control">
+                <a class="button is-light" href="/destinatarios/lista-destinatarios">
+                  Cancelar
+                </a>
+              </p>
+            </div>
+
+          </form>
+        </div>
+
+      </div>
+
+    </section>
+    <script>
+      const userId = {{{jsonify userId}}}; // ID del usuario autenticado
+    </script>
+    <script type="module" src="/js/form-destinatarios.js"></script>
+</body>
+</html>

@@ -1,0 +1,36 @@
+<!-- src/views/partials/menu.hbs is-paddingless-->
+<nav class="navbar is-primary is-light" role="navigation" aria-label="main navigation">
+  <div class="navbar-brand">
+    <!-- Logo -->
+    <a href="/solicitudes/solicitudes" class="navbar-item  no-hover">
+      <img src="/img/Simbolo-Proditexco.png" alt="Logo" style="max-height: 3rem;">
+    </a>
+  </div>
+
+  <div class="navbar-menu">
+    <!-- Menú principal (lado izquierdo) -->
+    <div class="navbar-start">
+      <a href="/solicitudes/solicitudes" class="navbar-item">Inicio</a>
+      <a href="/solicitudes/lista-solicitudes" class="navbar-item">Mis Solicitudes</a>
+      <a href="/solicitudes/form-solicitudes" class="navbar-item">Solicitar Domicilio</a>
+      <a href="/destinatarios/lista-destinatarios" class="navbar-item">Destinatarios</a>
+    </div>
+
+    <!-- Menú secundario (lado derecho) -->
+    <div class="navbar-end">
+      <a href="/auth/logout" class="navbar-item has-text-danger">
+        <span class="icon">
+          <i class="fas fa-sign-out-alt"></i> <!-- Ícono de cerrar sesión -->
+        </span>
+        <span>Cerrar Sesión</span>
+      </a>
+    </div>
+  </div>
+</nav>
+
+<style>
+  /* Desactivar el hover para elementos específicos */
+  .no-hover:hover {
+    background-color: transparent !important; /* Evita que cambie el fondo */
+  }
+</style>

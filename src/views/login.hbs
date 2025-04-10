@@ -1,0 +1,42 @@
+<!-- src/views/login.hbs -->
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Iniciar Sesión</title>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</head>
+<body>
+  <section class="hero is-fullheight">
+    <div class="hero-body">
+      <div class="container has-text-centered">
+        <div class="image is-inline-block" style="margin: 20 auto;">
+          <img src="/img/Logo-Proditexco.png" alt="Logo" style="width: 100%; height: auto;">
+        </div>
+        <h1 class="title">Iniciar Sesión</h1>
+        <form id="loginForm" class="box" style="max-width: 500px; margin: 0 auto;">
+          <div class="field">
+            <label class="label">Usuario</label>
+            <div class="control">
+              <input class="input has-text-centered" type="text" name="username" placeholder="Nombre de usuario" required>
+            </div>
+          </div>
+          <div class="field">
+            <label class="label">Contraseña</label>
+            <div class="control">
+              <input class="input has-text-centered" type="password" name="password" placeholder="Contraseña" required>
+            </div>
+          </div>
+          <div class="field">
+            <button type="submit" class="button is-primary is-fullwidth">Ingresar</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <!-- Enlazar el archivo externo -->
+  <script src="/js/login.js"></script>
+</body>
+</html>
