@@ -12,10 +12,10 @@ import { solicitudesRouter } from './routes/solicitudes.routes.js';
 import { actividadesRouter } from './routes/actividades.routes.js';
 import { destinatariosRouter } from './routes/destinatarios.routes.js';
 import { barriosRouter } from './routes/barrios.routes.js';
-import { isAuthenticated } from './middlewares/isAuthenticated.mid.js';
 
 // cargar variables de entorno
 dotenv.config();
+
 
 const app = express();
 const port = process.env.PORT || 8080;
@@ -35,12 +35,19 @@ app.use((req, res, next) => {
 // app.use(express.static(path.resolve(__dirname, '../public')));
 app.use(express.static(path.join(__dirname, '../public')));
 
+const isProduction = process.env.NODE_ENV === 'production'; // Detecta si estás en producción
+const isHttps = isProduction || (process.env.FORCE_HTTPS && process.env.FORCE_HTTPS === 'true');
+
 // Configuración de sesiones
 app.use(session({
   secret: process.env.SESSION_SECRET || 'clave-secreta', // Clave para firmar la sesión
   resave: false,
   saveUninitialized: true,
-  cookie: { secure: false } // Cambia a `true` si usas HTTPS
+  cookie: {
+    secure: isHttps, // Habilita `secure` solo si estás usando HTTPS
+    httpOnly: true,   // Asegura que las cookies no sean accesibles desde JavaScript
+    sameSite: 'lax'   // Mejora la seguridad contra ataques CSRF
+  }
 }));
 
 // Handlebars configuration

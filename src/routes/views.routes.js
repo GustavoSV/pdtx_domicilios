@@ -11,23 +11,8 @@ viewsRouter.get("/", (req, res) => {
 // Ruta protegida para la Solicitud de Domicilios
 viewsRouter.get("/solicitudes/solicitudes", isAuthenticated, async (req, res) => {
   try {
-    // consumir el endpoint de API solicitudes      
-    const response = await fetch(`${process.env.API_BASE_URL}/api/solicitudes`, {
-      headers: { Cookie: req.headers.cookie },
-    });
-
-    if (!response.ok) {
-      const errorMessage = await response.text(); // Leer el cuerpo de la respuesta como texto
-      console.error('Error en la respuesta del servidor:', errorMessage);
-      throw new Error(`Error ${response.status}: ${errorMessage}`);
-    }
-    
-    const data = await response.json();  
-
     res.render("domicilios/home-solicitudes.hbs", {
       user: req.session.user,
-      solicitudesActivas: data.solicitudesActivas,
-      solicitudesCompletadas: data.solicitudesCompletadas, 
     });
   } catch (error) {
     console.error("Error al cargar el home-solicitudes:", error.message);
@@ -39,14 +24,7 @@ viewsRouter.get("/solicitudes/solicitudes", isAuthenticated, async (req, res) =>
 viewsRouter.get('/solicitudes/detalle-solicitudes/:id', isAuthenticated, async (req, res) => {
   try {
     const { id } = req.params;
-    
-    // consumir el endpoint de API solic-detalle
-    const response = await fetch(`${process.env.API_BASE_URL}/api/solicitudes/${id}`, {
-      headers: { Cookie: req.headers.cookie },  // pasar la sesión del usuario
-    });
-    const data = await response.json();
-    // Renderizar la vista con los datos
-    res.render('domicilios/detalle-solicitudes.hbs', { domicilio: data.solicitudSerializada });
+    res.render('domicilios/detalle-solicitudes.hbs', { idSolicitud: id });
   } catch (error) {
     console.error('Error al obtener los detalles del domicilio:', error.message);
     res.status(500).send('Error interno del servidor');

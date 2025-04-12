@@ -17,13 +17,14 @@ solicitudesRouter.get('/', isAuthenticated, async (req, res) => {  // /api/solic
     const userId = req.session.user.id;
     const solicitudesActivas = await solicitudesManager.getSolicitudesActivas(userId);
     const solicitudesCompletadas = await solicitudesManager.getSolicitudesCompletadas(userId);
-    const objetoLimitado = Object.fromEntries(
-      Object.entries(solicitudesCompletadas).slice(0, limite)
-    );
+    // const objetoLimitado = Object.fromEntries(
+    //   Object.entries(solicitudesCompletadas).slice(0, limite)
+    // );
+    const arrayLimitado = Object.values(solicitudesCompletadas).slice(0, limite);
 
      // Serializar los datos usando la función genérica
     const solicitudesActivasSerializadas = serializeBigInt(solicitudesActivas);
-    const solicitudesCompletadasSerializadas = serializeBigInt(objetoLimitado);
+    const solicitudesCompletadasSerializadas = serializeBigInt(arrayLimitado);
  
     res.json({
       solicitudesActivas: solicitudesActivasSerializadas,

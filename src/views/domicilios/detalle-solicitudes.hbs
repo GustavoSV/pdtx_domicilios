@@ -5,7 +5,6 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Detalles del Domicilio</title>
-    {{! <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css"> }}
   </head>
   <body>
     <!-- Menú -->
@@ -21,89 +20,82 @@
             <tbody>
               <tr>
                 <th>ID</th>
-                <td>{{domicilio.dsoId}}</td>
+                <td id="solicitud-id">{{idSolicitud}}</td>
               </tr>
               <tr>
                 <th>Estado</th>
-                <td>{{domicilio.estado.eneEstado}}</td>
+                <td id="solicitud-estado"></td>
               </tr>
               <tr>
                 <th>Actividad</th>
-                <td>{{domicilio.actividad.dacDescripcion}}</td>
+                <td id="solicitud-actividad"></td>
               </tr>
               <tr>
                 <th>Destinatario</th>
-                <td>{{domicilio.destinatario.ddtNombre}}</td>
+                <td id="solicitud-destinatario"></td>
               </tr>
               <tr>
                 <th>Dirección</th>
-                <td>{{domicilio.dsoDireccion}}</td>
+                <td id="solicitud-direccion"></td>
               </tr>
               <tr>
                 <th>Barrio</th>
-                <td>{{domicilio.barrio.gbrNombre}}</td>
+                <td id="solicitud-barrio"></td>
               </tr>
               <tr>
                 <th>Teléfono</th>
-                <td>{{domicilio.dsoTelefono}}</td>
+                <td id="solicitud-telefono"></td>
               </tr>
               <tr>
                 <th>Instrucciones</th>
-                <td>{{domicilio.dsoInstrucciones}}</td>
+                <td id="solicitud-instrucciones"></td>
               </tr>
               <tr>
                 <th>Fecha de Solicitud</th>
-                <td>
-                  <span
+                <td id="gestion-fecha-solicitud">
+                  {{!-- <span
                     class="fechas"
                     data-fecha="{{domicilio.dsoFchSolicitud}}"
-                  ></span>
+                  ></span> --}}
                 </td>
               </tr>
               <tr>
                 <th>Fecha de Entrega</th>
-                <td>
-                  <span
+                <td id="gestion-fecha-entrega">
+                  {{!-- <span
                     class="fechas"
                     data-fecha="{{domicilio.dataGestion.dgoFchEntrega}}"
-                  ></span>
+                  ></span> --}}
                 </td>
               </tr>
               <tr>
                 <th>Mensajero</th>
-                <td>{{domicilio.dataGestion.mensajero.msjNombre}}</td>
+                <td id="gestion-mensajero"></td>
               </tr>
               <tr>
                 <th>Valor</th>
-                <td>{{domicilio.dataGestion.dgoValor}}</td>
+                <td id="gestion-valor"></td>
               </tr>
               <tr>
                 <th>Vr adicional</th>
-                <td>{{domicilio.dataGestion.dgoVrAdicional}}</td>
+                <td id="gestion-vr-adicional"></td>
               </tr>
               <tr>
                 <th>Centro de costos</th>
-                <td>
-                  {{domicilio.dataGestion.centroscosto.cctCodUEN}}
-                  -
-                  {{domicilio.dataGestion.centroscosto.cctNombreCC}}
-                </td>
+                <td id="gestion-centro-costos"></td>
               </tr>
             </tbody>
           </table>
 
           <!-- Botón para editar -->  
-          <a id="buttonEditar"
-            href="/solicitudes/form-solicitudes/{{domicilio.dsoId}}"
-            class="button is-warning"
-            data-estado="{{domicilio.dsoCodEstado}}"
-          >Editar</a>
+          <a id="buttonEditar" class="button is-warning">Editar</a>
 
-        <!-- Botón para regresar -->
-        <a href="javascript:history.back()" class="button is-primary">Regresar</a>
+          <!-- Botón para regresar -->
+          <a href="javascript:history.back()" class="button is-primary">Regresar</a>
+        </div>
       </div>
 
-      <table class="table is-hoverable">
+      {{!-- <table class="table is-hoverable">
         <thead>
           <tr>
             <th>Col 1</th>
@@ -127,7 +119,7 @@
             <td>Five</td>
           </tr>
         </tbody>
-      </table>
+      </table> --}}
     </section>
     <script type="module" src="/js/detalle-solicitudes.js"></script>
   </body>

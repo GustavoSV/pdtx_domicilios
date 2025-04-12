@@ -17,6 +17,7 @@ authRouter.post("/login", async (req, res) => {
   try {
     const { username, password } = req.body;
     const usuario = await req.usuariosManager.getValidarLogin(username, password, "DOM");
+    
     if (usuario) {
       req.session.user = {
         id: usuario.usuUsuario,

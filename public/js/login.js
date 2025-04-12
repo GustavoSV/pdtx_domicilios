@@ -21,7 +21,6 @@ document.addEventListener('DOMContentLoaded', () => {
         });
 
         const result = await response.json();
-        console.log('login.js: result:', result, "response:", response);
         
         if (response.ok && result.success) {
           Swal.fire({

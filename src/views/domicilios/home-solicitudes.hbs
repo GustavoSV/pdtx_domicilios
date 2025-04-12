@@ -35,8 +35,8 @@
                     <th>Detalle</th>
                   </tr>
                 </thead>
-                <tbody>
-                  {{#each solicitudesActivas}}
+                <tbody id="solicitudes-activas-table">
+                  {{!-- {{#each solicitudesActivas}}
                     <tr>
                       <td>{{this.dsoId}}</td>
                       <td>{{this.destinatario.ddtNombre}}</td>
@@ -47,7 +47,7 @@
                         </a>
                       </td>
                     </tr>
-                  {{/each}}
+                  {{/each}} --}}
                 </tbody>
               </table>
             </div>
@@ -70,8 +70,8 @@
                     <th>Detalle</th>
                   </tr>
                 </thead>
-                <tbody>
-                  {{#each solicitudesCompletadas}}
+                <tbody id="solicitudes-completadas-table">
+                  {{!-- {{#each solicitudesCompletadas}}
                     <tr>
                       <td>{{this.dsoId}}</td>
                       <td>{{this.destinatario.ddtNombre}}</td>
@@ -83,7 +83,7 @@
                           <i class="fas fa-arrow-right"></i>
                         </a>
                     </tr>
-                  {{/each}}
+                  {{/each}} --}}
                 </tbody>
               </table>
             </div>

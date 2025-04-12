@@ -15,14 +15,6 @@ document.addEventListener('DOMContentLoaded', async () => {
   const telefonoInput = document.getElementById('solicitud-telefono');
   const instruccioesInput = document.getElementById('solicitud-instrucciones');
 
-  // const listaMunicipios = [
-  //   { codMcpio: "68001", nombreMcpio: "BUCARAMANGA" }, 
-  //   { codMcpio: "68276", nombreMcpio: "FLORIDABLANCA" }, 
-  //   { codMcpio: "68547", nombreMcpio: "PIEDECUESTA" }, 
-  //   { codMcpio: "68307", nombreMcpio: "GIRON" }, 
-  //   { codMcpio: "00000", nombreMcpio: "NO EXISTE"}
-  // ];
-
   const solicitudId = form.querySelector('#solicitud-id').value;
   const isEdition = solicitudId !== '';
 
@@ -77,10 +69,6 @@ document.addEventListener('DOMContentLoaded', async () => {
         submitButton.textContent = 'Guardar Cambios';
 
         // Llenar campos con los datos de la solicitud
-        // form.querySelector('#solicitud-id').value = solicitudData.dsoId || '';
-        // form.querySelector('#solicitud-direccion').value = solicitudData.dsoDireccion || '';
-        // form.querySelector('#solicitud-telefono').value = solicitudData.dsoTelefono || '';
-        // form.querySelector('#solicitud-instrucciones').value = solicitudData.dsoInstrucciones || '';
         idInput.value = solicitudData.dsoId || '';
         direccionInput.value = solicitudData.dsoDireccion || '';
         telefonoInput.value = solicitudData.dsoTelefono || '';
@@ -106,7 +94,6 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     // Cargar destinatarios
     const resDestinatarios = await fetchData('/api/destinatarios');
-    console.log('resDestinatarios:', resDestinatarios);
     
     populateSelect(destinatarioSelect, resDestinatarios.destinatarios, solicitudData?.dsoCodDestinatario, 'ddtId', 'ddtNombre');
 
