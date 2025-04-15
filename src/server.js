@@ -40,13 +40,6 @@ const isHttps = isProduction || (process.env.FORCE_HTTPS && process.env.FORCE_HT
 
 app.use((req, res, next) => {
   // Middleware para determinar si la conexión es HTTPS
-  // Esto se puede hacer de manera más robusta dependiendo de tu configuración de proxy inverso
-  // o balanceador de carga. Aquí se asume que estás detrás de un proxy que establece el encabezado X-Forwarded-Proto.
-  // En producción, asegúrate de que tu proxy esté configurado para pasar este encabezado.
-  if (req.headers['x-forwarded-proto'] === 'https') {
-    req.protocol = 'https';
-  }
-  // Si estás detrás de un proxy, puedes usar el siguiente código para forzar HTTPS
   const isHttps = req.protocol === 'https';
   app.locals.isHttps = isHttps; // Almacena el valor en app.locals para su uso posterior}
 
