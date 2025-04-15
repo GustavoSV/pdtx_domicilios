@@ -15,7 +15,7 @@ const loadSolicitudes = async (tablaActivas, tablaCompletadas) => {
   try {
     const response = await fetch(`/api/solicitudes`);
     if (!response.ok) {
-      throw new Error('Error al cargar las solicitudes'); 
+      throw new Error('Error al cargar las solicitudes. Leyendo /api/solicitudes'); 
     }
     const data = await response.json();
     const solicitudesActivas = data.solicitudesActivas;
@@ -57,6 +57,6 @@ const loadSolicitudes = async (tablaActivas, tablaCompletadas) => {
       tablaCompletadas.appendChild(row);
     });
   } catch (error) {
-    console.error('Error al cargar las solicitudes:', error.message);
+    console.error('Error al cargar las solicitudes. home-solicitudes:', error.message);
   }
 };
