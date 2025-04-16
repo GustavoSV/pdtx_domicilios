@@ -16,7 +16,6 @@ import { barriosRouter } from './routes/barrios.routes.js';
 // cargar variables de entorno
 dotenv.config();
 
-
 const app = express();
 const port = process.env.PORT || 8080;
 export const db = new PrismaClient();
@@ -35,26 +34,9 @@ app.use((req, res, next) => {
 // app.use(express.static(path.resolve(__dirname, '../public')));
 app.use(express.static(path.join(__dirname, '../public')));
 
-app.set('trust proxy', 1); // Esto es crucial en entornos como Railway
-
-const isProduction = process.env.NODE_ENV === 'production'; // Detecta si estás en producción
-const isHttps = isProduction || (process.env.FORCE_HTTPS && process.env.FORCE_HTTPS === 'true');
-
-console.log(`SERVER - isProduction: ${isProduction}`);
-console.log(`SERVER - isHttps: ${isHttps}`);
+app.set('trust proxy', 1); // Esto es crucial en entornos como Railway o Heroku, donde el proxy inverso maneja las conexiones HTTPS.
 
 // Configuración de sesiones
-// app.use(session({
-//   secret: process.env.SESSION_SECRET || 'clave-secreta', // Clave para firmar la sesión
-//   resave: false,
-//   saveUninitialized: true,
-//   cookie: {
-//     secure: process.env.NODE_ENV === 'production', // Habilita `secure` solo si estás usando HTTPS que se espera así sea en modo de producción
-//     httpOnly: true,   // Asegura que las cookies no sean accesibles desde JavaScript
-//     sameSite: 'lax'   // Mejora la seguridad contra ataques CSRF
-//   }
-// }));
-
 app.use(session({
   secret: process.env.SESSION_SECRET || 'clave-secreta', // Clave para firmar la sesión
   resave: false,
@@ -62,17 +44,11 @@ app.use(session({
   proxy: true, // Añade esto para trabajar mejor con proxies
   cookie: {
     secure: process.env.NODE_ENV === 'production',
+    httpOnly: true,   // Asegura que las cookies no sean accesibles desde JavaScript
     sameSite: 'lax', // o 'none' si es necesario para cross-site
     maxAge: 24 * 60 * 60 * 1000 // 24 horas
   }
 }));
-
-app.use((req, res, next) => {
-  console.log('Headers:', req.headers);
-  console.log('Protocol:', req.protocol);
-  console.log('Secure:', req.secure);
-  next();
-});
 
 // Handlebars configuration
 app.engine(
