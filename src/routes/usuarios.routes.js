@@ -25,7 +25,7 @@ authRouter.post("/login", async (req, res) => {
         role: usuario.usuTipoUsuario
       };
 
-      console.log("authRouter.post/login - req.session:", req.session);
+      // console.log("authRouter.post/login - req.session:", req.session);
       
       let redirectUrl = "/";
       if (usuario.rapCodRol === "SOL") {    

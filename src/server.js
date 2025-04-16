@@ -38,18 +38,8 @@ app.use(express.static(path.join(__dirname, '../public')));
 const isProduction = process.env.NODE_ENV === 'production'; // Detecta si estás en producción
 const isHttps = isProduction || (process.env.FORCE_HTTPS && process.env.FORCE_HTTPS === 'true');
 
-app.use((req, res, next) => {
-  // Middleware para determinar si la conexión es HTTPS
-  const isHttps = req.protocol === 'https';
-  app.locals.isHttps = isHttps; // Almacena el valor en app.locals para su uso posterior}
-
-  console.log("app.locals.isHttps:", app.locals.isHttps);
-  console.log("app.locals.isProduction:", isProduction);
-  console.log("req.protocol:", req.protocol);
-  console.log("req.secure:", req.secure);
-  
-  next();
-});
+console.log(`SERVER - isProduction: ${isProduction}`);
+console.log(`SERVER - isHttps: ${isHttps}`);
 
 // Configuración de sesiones
 app.use(session({
@@ -57,7 +47,7 @@ app.use(session({
   resave: false,
   saveUninitialized: true,
   cookie: {
-    secure: app.locals.isHttps, // Habilita `secure` solo si estás usando HTTPS
+    secure: process.env.NODE_ENV === 'production', // Habilita `secure` solo si estás usando HTTPS que se espera así sea en modo de producción
     httpOnly: true,   // Asegura que las cookies no sean accesibles desde JavaScript
     sameSite: 'lax'   // Mejora la seguridad contra ataques CSRF
   }
