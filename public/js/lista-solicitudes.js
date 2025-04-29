@@ -90,7 +90,6 @@ document.addEventListener('DOMContentLoaded', () => {
       });
       const data = await response.json();
       
-      
       // Limpiar la tabla
       tableBody.innerHTML = '';
 
@@ -104,7 +103,7 @@ document.addEventListener('DOMContentLoaded', () => {
           <td>${solicitud.destinatario.ddtNombre}</td>
           <td>${solicitud.estado.eneEstado}</td>
           <td>${formatearFecha(solicitud.dsoFchSolicitud)}</td>
-          <td>${solicitud.dataGestion?.dgoFchEntrega ? formatearFecha(solicitud.dataGestion.dgoFchEntrega) : '-'}</td>
+          <td>${solicitud.gestion?.dgoFchEntrega ? formatearFecha(solicitud.gestion.dgoFchEntrega) : '-'}</td>
           <td class="has-text-centered">
             <a href="/solicitudes/detalle-solicitudes/${solicitud.dsoId}" class="has-text-primary">
               <i class="fas fa-arrow-right"></i>

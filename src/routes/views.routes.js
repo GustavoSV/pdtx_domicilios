@@ -57,9 +57,43 @@ viewsRouter.get("/solicitudes/form-solicitudes/:id", isAuthenticated, async (req
 
 // RUTAS PARA LA GESTION DE DOMICILIOS
 // Ruta protegida para la gestión de los domicilios
-viewsRouter.get("/gestion/gestion", isAuthenticated, async (req, res) => {
-  res.render("domicilios/home-gestion.hbs", { title: "Gestión de Domicilios" });
+viewsRouter.get("/gestion/dashboard", isAuthenticated, async (req, res) => {
+  try {
+    res.render("domicilios/home-gestion.hbs",  {
+      user: req.session.user,
+    });
+  } catch (error) {
+    console.error("Error al cargar el home-gestion:", error.message);
+    res.status(500).send("Error interno del servidor");
+  }
 });
+
+viewsRouter.get("/gestion/lista-gestion", isAuthenticated, async (req, res) => {
+  try {
+    res.render("domicilios/lista-gestion.hbs", {
+      user: req.session.user,
+    });
+  } catch (error) {
+    console.error("Error al cargar el lista-gestion:", error.message);
+    res.status(500).send("Error interno del servidor");
+  }
+});
+
+viewsRouter.get("/gestion/form-gestion/:id", isAuthenticated, async (req, res) => {
+  try {
+    const { id } = req.params;
+    res.render("domicilios/form-gestion.hbs", {
+      idSolicitud: id,
+      title: "Gestionar Domicilio",
+      user: req.session.user,
+    });
+
+  } catch (error) {
+    console.error("Error al cargar el form-gestion:", error.message);
+    res.status(500).send("Error interno del servidor");
+  }
+}
+);
 
 // RUTAS PARA EL MANEJO DE LOS DESTINATARIOS
 // Ruta protegida para la lista de destinatarios

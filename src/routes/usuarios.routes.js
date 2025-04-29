@@ -20,7 +20,7 @@ authRouter.post("/login", async (req, res) => {
     
     if (usuario) {
       req.session.user = {
-        id: usuario.usuUsuario,
+        id: usuario.usuId,
         username: usuario.usuNombre,
         role: usuario.usuTipoUsuario
       };
@@ -31,7 +31,7 @@ authRouter.post("/login", async (req, res) => {
       if (usuario.rapCodRol === "SOL") {    
         redirectUrl = `/solicitudes/solicitudes?username=${encodeURIComponent(usuario.usuNombre)}`;
       } else if (usuario.rapCodRol === "GST") {
-        redirectUrl = `/gestion/gestion?username=${encodeURIComponent(usuario.usuNombre)}`;
+        redirectUrl = `/gestion/dashboard?username=${encodeURIComponent(usuario.usuNombre)}`;
       } else if (usuario.rapCodRol === "ADM") {
         redirectUrl = `/gestion/administracion?username=${encodeURIComponent(usuario.usuNombre)}`;
       } else {

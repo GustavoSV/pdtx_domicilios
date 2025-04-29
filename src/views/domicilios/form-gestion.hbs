@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Formulario Gestión</title>
+</head>
+<body>
+  <!-- Menú -->
+    {{> menu-gestion }}
+
+  <section class="section">
+    <div class="container">
+      <h1 class="title" id="form-title">Formulario Gestión</h1>
+
+      <div id="formulario" class="box">
+        <form id="gestion-form">
+
+          <!-- Campo ID (solo visible en edición) -->
+          <fieldset disabled>
+            <div class="field is-horizontal">
+              <div class="field-label is-normal" style="width: 80px;">
+                <label class="label">ID</label>
+              </div>
+              <div class="field-body">
+                <div class="field is-narrow" style="width: 150px;">
+                  <div class="control">
+                    <input class="input" id="gestion-id" type="text" placeholder="ID Solicitud" value="{{idSolicitud}}">
+                  </div>
+                </div>
+                <div class="field-label is-normal">
+                  <label class="label">Solicitante</label>
+                </div>
+                <div class="field">
+                  <div class="control">
+                    <input class="input" id="gestion-solicitante" type="text" placeholder="Solicitante">
+                  </div>
+                </div>
+              </div>
+            </div>
+          </fieldset>
+
+          <!-- Destinatario -->
+          <div class="field is-horizontal">
+            <div class="field-label is-normal">
+              <label class="label">Destinatario</label>
+            </div>
+            <div class="field-body">
+              <div class="field">
+                <div class="control">
+                  <input class="input" id="gestion-destinatario" type="text" placeholder="Destinatario">
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Dirección -->
+          <div class="field is-horizontal">
+            <div class="field-label is-normal">
+              <label class="label">Dirección</label>
+            </div>
+            <div class="field-body">
+              <div class="field">
+                <div class="control">
+                  <input class="input" id="gestion-direccion" type="text" placeholder="Dirección">
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Teléfono -->
+          {{!-- <div class="field is-horizontal">
+            <div class="field-label is-normal">
+              <label class="label">Teléfono</label>
+            </div>
+            <div class="field-body">
+              <div class="field">
+                <div class="control">
+                  <input class="input" id="gestion-telefono" type="text" placeholder="Teléfono">
+                </div>
+              </div>
+            </div>
+          </div> --}}
+
+          <!-- Actividad -->
+          <div class="field is-horizontal">
+            <div class="field-label is-normal">
+              <label class="label">Actividad</label>
+            </div>
+            <div class="field-body">
+              <div class="field">
+                <div class="control">
+                  <input class="input" id="gestion-actividad" type="text" placeholder="Actividad">
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Indicaciones -->
+          <div class="field is-horizontal">
+            <div class="field-label is-normal">
+              <label class="label">Indicaciones</label>
+            </div>
+            <div class="field-body">
+              <div class="field">
+                <div class="control">
+                  <input class="input" id="gestion-indicaciones" type="text" placeholder="Indicaciones">
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Mensajero -->
+          <div class="field is-horizontal">
+            <div class="field-label is-normal">
+              <label class="label">Mensajero</label>
+            </div>
+            <div class="field-body">
+              <div class="field is-narrow">
+                <div class="control">
+                  <div class="select">
+                    <select id="gestion-mensajero"></select>
+                  </div>
+                </div>
+                <p class="help">Este campo es requerido</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Estado Completado - Valor y Valor adicional -->
+          <div class="field is-horizontal">
+            <div class="field-label is-normal">
+              <label class="label">Estado</label>
+            </div>
+
+            <div class="field-body">
+              <div class="field-label is-normal" style="width: 250px;">
+                <div class="is-flex is-align-items-center">
+                  <label class="label mr-2">¿Se completó el domicilio?</label>
+                  <input type="checkbox" id="domicilio-completado" style="width: 1.5rem; height: 1.5rem;">
+                </div>
+              </div>
+              <div class="field-label is-normal">
+                <label class="label">Valores</label>
+              </div>
+              <div class="field is-narrow ml-auto">
+                <div class="control">
+                  <input class="input" id="gestion-valor" type="text" placeholder="Valor">
+                </div>
+              </div>
+              <div class="field is-narrow">
+                <div class="control">
+                  <input class="input" id="gestion-valor-adicional" type="text" placeholder="Valor adicional">
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Centro de costos -->
+          <div class="field is-horizontal">
+            <div class="field-label is-normal">
+              <label class="label">Centro de costos</label>
+            </div>
+            <div class="field-body">
+              <div class="field is-narrow">
+                <div class="control">
+                  <div class="select">
+                    <select id="gestion-centrocostos"></select>
+                  </div>
+                </div>
+                <p class="help">Este campo es requerido</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Observaciones -->
+          <div class="field is-horizontal">
+            <div class="field-label is-normal">
+              <label class="label">Observaciones</label>
+            </div>
+            <div class="field-body">
+              <div class="field">
+                <div class="control">
+                  <textarea class="textarea" id="gestion-observaciones" placeholder="Observaciones"></textarea>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Botones de acción -->
+          <div class="field is-grouped is-grouped-centered">
+            <p class="control">
+              <button class="button is-primary" id="submit-button">
+                Guardar
+              </button>
+            </p>
+            <p class="control">
+              <a class="button is-light" href="/gestion/lista-gestion">
+                Cancelar
+              </a>
+            </p>
+          </div>
+        </form>
+      </div>
+    </div>
+  </section>
+
+</body>
+</html>

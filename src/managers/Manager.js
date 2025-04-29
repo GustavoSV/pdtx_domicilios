@@ -30,6 +30,20 @@ export class Manager {
     }
   }
 
+  async getAllSelect(select = {}, where = {}, orderBy = {}) {
+    try {
+      const all = await this.model.findMany({
+        select,
+        where,
+        orderBy,
+      });
+      return all;
+    } catch (error) {
+      console.error('Error al obtener todos los registros:', error.message);
+      throw error;
+    }
+  }
+
   async getPaginate(options = {}) {
     try {
       const { page = 1, pageSize = 10, where = {}, include = {}, orderBy = {} } = options;
@@ -130,9 +144,11 @@ export class Manager {
     }
   }
 
-  async count() {
+  async count(where = {}) {
     try {
-      const count = await this.model.count();
+      const count = await this.model.count({
+        where: where
+      });
       return count;
     } catch (error) {
       console.error('Error al contar los registros:', error.message);

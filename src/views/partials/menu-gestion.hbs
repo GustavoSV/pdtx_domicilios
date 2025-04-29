@@ -1,14 +1,14 @@
-<!-- src/views/partials/menu.hbs is-paddingless-->
 <nav class="navbar is-primary is-light" role="navigation" aria-label="main navigation">
   <div class="navbar-brand">
     <!-- Logo -->
     <div class="navbar-item"></div>   <!-- navbar item vacío para que se genere un espacio al lado izquierdo -->
-    <a href="/solicitudes/solicitudes" class="navbar-item  no-hover">
+    <a href="/gestion/dashboard" class="navbar-item  no-hover">
       <img src="/img/Simbolo-Proditexco.png" alt="Logo" style="max-height: 3rem;">
     </a>
 
     <!-- Hamburguesa para móvil -->
     <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false" data-target="navbarMain">
+        <span aria-hidden="true"></span>
         <span aria-hidden="true"></span>
         <span aria-hidden="true"></span>
         <span aria-hidden="true"></span>
@@ -18,16 +18,22 @@
   <div id="navbarMain" class="navbar-menu">
     <!-- Menú principal (lado izquierdo) -->
     <div class="navbar-start">
-      <a href="/solicitudes/solicitudes" class="navbar-item">Inicio</a>
-      <a href="/solicitudes/lista-solicitudes" class="navbar-item">Mis Solicitudes</a>
-      <a href="/solicitudes/form-solicitudes" class="navbar-item">Solicitar Domicilio</a>
-      <a href="/destinatarios/lista-destinatarios" class="navbar-item">Destinatarios</a>
+      <a href="/gestion/dashboard" class="navbar-item">Inicio</a>
+      <a href="/gestion/lista-gestion" class="navbar-item">Solicitudes</a>
+      <a href="/mensajeros/lista-mensajeros" class="navbar-item">Mensajeros</a>
+      <a href="/reportes/gestion" class="navbar-item">Reportes</a>
     </div>
 
     <!-- Menú secundario (lado derecho) -->
     <div class="navbar-end">
       <div class="navbar-item">
         <div class="buttons">
+          <a class="button is-primary is-light" href="/solicitudes/form-solicitudes">
+            <span class="icon">
+              <i class="fas fa-plus"></i>
+            </span>
+            <span>Nueva Solicitud</span>
+          </a>
           <a class="button is-light ml-3 has-text-danger-40" href="/auth/logout">
             <span class="icon">
                 <i class="fas has-text-danger-40 fa-sign-out-alt"></i>

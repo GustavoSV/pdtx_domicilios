@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Gestión de Solicitudes</title>
+  <link rel="stylesheet" href="/css/styles.css">
+  <script type="module" src="/js/lista-gestion.js"></script>
+</head>
+<body>
+  {{> menu-gestion }}
+  
+  
+  <section class="section">
+    <div class="container">
+      <h1 class="title">Gestión de Solicitudes</h1>
+      <!-- Componente Tab -->
+      <div class="tabs is-toggle is-fullwidth">
+        <ul>
+          <li data-estado="SO" class="is-active">
+            <a class="custom-tab">
+              <span class="icon is-small">
+                <i class="fas fa-clock" aria-hidden="true"></i>
+              </span>
+              <span>Pendientes</span>
+            </a>
+          </li>
+          <li data-estado="EP">
+            <a class="custom-tab">
+              <span class="icon is-small">
+                <i class="fas fa-motorcycle" aria-hidden="true"></i>
+              </span>
+              <span>En Proceso</span>
+            </a>
+          </li>
+          <li data-estado="ET">
+            <a class="custom-tab">
+              <span class="icon is-small">
+                <i class="fas fa-check" aria-hidden="true"></i>
+              </span>
+              <span>Completadas</span>
+            </a>
+          </li>
+          <li data-estado="TODAS">
+            <a class="custom-tab">
+              <span class="icon is-small">
+                <i class="fas fa-list" aria-hidden="true"></i>
+              </span>
+              <span>Todas</span>
+            </a>
+          </li>
+        </ul>
+      </div>
+      
+      <div class="box">
+        <!-- Elemento para buscar alineado a la derecha -->
+        <div class="level-right mb-4">
+          <div class="level-item">
+            <div class="field has-addons">
+              <div class="control">
+                <input id="search-input" class="input" type="text" placeholder="Buscar solicitud"/>
+              </div>
+              <div class="control">
+                <a id="search-button" class="button is-primary">
+                  <span class="icon">
+                    <i class="fas fa-search"></i>
+                  </span>
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="table-container">
+          <table class="table is-fullwidth is-hoverable">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Solicitante</th>
+                <th>Destinatario</th>
+                <th>Fecha Solicitud</th>
+                <th id="colVariable">Dirección</th>
+                <th>Estado</th>
+                <th>Acciones</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody id="solicitudes-table-body">
+              <!-- Aquí se cargarán dinámicamente las solicitudes -->
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Paginación -->
+        <nav class="pagination is-centered" role="navigation" aria-label="pagination">
+          <a id="prev-page" class="pagination-previous">Página Anterior</a>
+          <a id="next-page" class="pagination-next">Página Siguiente</a>
+          <span id="pagination-info" class="pagination-info"></span>
+        </nav>
+      </div>
+    </div>
+  </section>
+
+</body>
+</html>

@@ -15,12 +15,20 @@
       <h1 class="title">Mis Solicitudes</h1>
 
       <!-- Búsqueda de solicitudes -->
-      <div class="field has-addons">
-        <div class="control">
-          <input id="search-input" class="input" type="text" placeholder="Buscar solicitud...">
-        </div>
-        <div class="control">
-          <button id="search-button" class="button is-primary">Buscar</button>
+      <div class="level-right mb-4">
+        <div class="level-item">
+          <div class="field has-addons">
+            <div class="control">
+              <input id="search-input" class="input" type="text" placeholder="Buscar solicitud"/>
+            </div>
+            <div class="control">
+              <a id="search-button" class="button is-primary">
+                <span class="icon">
+                  <i class="fas fa-search"></i>
+                </span>
+              </a>
+            </div>
+          </div>
         </div>
       </div>
 
@@ -45,7 +53,6 @@
       </table>
 
       <!-- Paginación -->
-      <!-- src/views/solicitudes/mis-solicitudes.hbs -->
       <nav class="pagination is-centered" role="navigation" aria-label="pagination">
         <a id="prev-page" class="pagination-previous">Página Anterior</a>
         <a id="next-page" class="pagination-next">Página Siguiente</a>
@@ -53,7 +60,7 @@
       </nav>
 
       <!-- Botón para Regresar -->
-      <a href="/solicitudes/solicitudes" class="button is-primary mt-4">Regresar</a>
+      {{!-- <a href="/solicitudes/solicitudes" class="button is-primary mt-4">Regresar</a> --}}
     </div>
   </section>
 

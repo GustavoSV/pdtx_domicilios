@@ -11,7 +11,6 @@ const prisma = new PrismaClient();
 
 // Obtener solicitudes activas y completadas (API)
 solicitudesRouter.get('/', isAuthenticated, async (req, res) => {  // /api/solicitudes
-  const limite = 10; // número de solicitudes completadas a mostrar
   const solicitudesManager = new SolicitudesManager(prisma);
   try {
     const userId = req.session.user.id;
@@ -20,6 +19,7 @@ solicitudesRouter.get('/', isAuthenticated, async (req, res) => {  // /api/solic
     // const objetoLimitado = Object.fromEntries(
     //   Object.entries(solicitudesCompletadas).slice(0, limite)
     // );
+    const limite = 10; // número de solicitudes completadas a mostrar
     const arrayLimitado = Object.values(solicitudesCompletadas).slice(0, limite);
 
      // Serializar los datos usando la función genérica
@@ -55,7 +55,6 @@ solicitudesRouter.get('/lista-solicitudes', isAuthenticated, async (req, res) =>
     }
     
     const misSolicitudesSerializadas = serializeBigInt(misSolicitudes);
-    
     res.json(misSolicitudesSerializadas);
   } catch (error) {
     console.error('Error al obtener las solicitudes del usuario:', error.message);
@@ -66,7 +65,7 @@ solicitudesRouter.get('/lista-solicitudes', isAuthenticated, async (req, res) =>
 // Obtener detalles de una solicitud (API)
 solicitudesRouter.get('/:id', isAuthenticated, async (req, res) => {  // /api/solicitudes/:id
   const solicitudesManager = new SolicitudesManager(prisma);
-  try {""
+  try {
     const { id } = req.params;
 
     const solicitud = await solicitudesManager.getObtenerSolicitudPorId(id);

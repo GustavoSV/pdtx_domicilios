@@ -17,6 +17,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const gestionValor = document.getElementById('gestion-valor'); // Valor de la solicitud
   const gestionVrAdicional = document.getElementById('gestion-vr-adicional'); // Valor adicional de la solicitud
   const gestionCC = document.getElementById('gestion-centro-costos'); // CC de la solicitud
+  const gestionObservaciones = document.getElementById('gestion-observaciones'); // Observaciones de la solicitud
 
   const buttonEditar = document.getElementById('buttonEditar');
   const estado = buttonEditar.getAttribute('data-estado'); // Estado de la solicitud
@@ -36,13 +37,14 @@ document.addEventListener('DOMContentLoaded', () => {
     solicitudTelefono.textContent = domicilio.dsoTelefono || '';
     solicitudInstrucciones.textContent = domicilio.dsoInstrucciones || '';
     gestionFechaSolicitud.textContent = formatearFecha(domicilio.dsoFchSolicitud) || '';
-    if (domicilio.dataGestion) {
-      gestionFechaEntrega.textContent = formatearFecha(domicilio.dataGestion.dgoFchEntrega) || '';
-      gestionFechaEntrega.textContent = formatearFecha(domicilio.dataGestion.dgoFchEntrega) || '';
-      gestionMensajero.textContent = domicilio.dataGestion.mensajero.msjNombre || '';
-      gestionValor.textContent = domicilio.dataGestion.dgoValor || '';
-      gestionVrAdicional.textContent = domicilio.dataGestion.dgoVrAdicional || '';
-      gestionCC.textContent = domicilio.dataGestion.centroscosto.cctCodUEN + '-' + domicilio.dataGestion.centroscosto.cctNombreCC || '';
+    if (domicilio.gestion) {
+      gestionFechaEntrega.textContent = formatearFecha(domicilio.gestion.dgoFchEntrega) || '';
+      gestionFechaEntrega.textContent = formatearFecha(domicilio.gestion.dgoFchEntrega) || '';
+      gestionMensajero.textContent = domicilio.gestion.mensajero.msjNombre || '';
+      gestionValor.textContent = domicilio.gestion.dgoValor || '';
+      gestionVrAdicional.textContent = domicilio.gestion.dgoVrAdicional || '';
+      gestionCC.textContent = domicilio.gestion.centroscosto.cctCodUEN + '-' + domicilio.gestion.centroscosto.cctNombreCC || '';
+      gestionObservaciones.textContent = domicilio.gestion.dgoObservaciones || '';
     }
 
     // COnfigurar el botón de editar

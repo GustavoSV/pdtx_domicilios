@@ -1,7 +1,6 @@
 // Función para formatear la fecha
 import { formatearFecha } from './utils.js';
 
-// Formatear todas las fechas en la página
 document.addEventListener('DOMContentLoaded', () => {
   // cargar información de solicitudes
   const tablaSolicitudesActivas = document.getElementById('solicitudes-activas-table');
@@ -47,7 +46,7 @@ const loadSolicitudes = async (tablaActivas, tablaCompletadas) => {
       row.innerHTML = `
         <td>${solicitud.dsoId}</td>
         <td>${solicitud.destinatario.ddtNombre}</td>
-        <td>${formatearFecha(solicitud.dataGestion.dgoFchEntrega)}</td>
+        <td>${formatearFecha(solicitud.gestion.dgoFchEntrega)}</td>
         <td class="has-text-centered">
           <a href="/solicitudes/detalle-solicitudes/${solicitud.dsoId}" class="has-text-primary" title="Ver detalles">
             <i class="fas fa-arrow-right"></i>

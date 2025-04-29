@@ -53,28 +53,28 @@ model dom_mensajeros {
   gestiones dom_gestion[]
 }
 
-model dom_domicilios {
-  domId Int @id @default(autoincrement())
-  domCodUsuario String @db.VarChar(50)
-  domCodActividad String @db.Char(3)
-  domCodCentroC String @db.Char(3)
-  domCodMensajero BigInt @db.BigInt
-  domCodDestinatario Int? @db.Int
-  domDestinatario String @db.VarChar(50)
-  domDireccion String @db.VarChar(80)
-  domCodBarrio String @db.Char(5)
-  domTelefono String? @db.VarChar(80)
-  domInstrucciones String? @db.VarChar(500)
-  domValor Decimal? @db.Decimal(10,2)
-  domVrAdicional Decimal? @db.Decimal(10,2)
-  domFchSolicitud DateTime
-  domFchEntrega DateTime?
-  domCodEstado String @db.Char(3)
-}
+// model dom_domicilios {
+//   domId Int @id @default(autoincrement())
+//   domCodUsuario String @db.VarChar(50)
+//   domCodActividad String @db.Char(3)
+//   domCodCentroC String @db.Char(3)
+//   domCodMensajero BigInt @db.BigInt
+//   domCodDestinatario Int? @db.Int
+//   domDestinatario String @db.VarChar(50)
+//   domDireccion String @db.VarChar(80)
+//   domCodBarrio String @db.Char(5)
+//   domTelefono String? @db.VarChar(80)
+//   domInstrucciones String? @db.VarChar(500)
+//   domValor Decimal? @db.Decimal(10,2)
+//   domVrAdicional Decimal? @db.Decimal(10,2)
+//   domFchSolicitud DateTime
+//   domFchEntrega DateTime?
+//   domCodEstado String @db.Char(3)
+// }
 
 model dom_solicitudes {
   dsoId Int @id @default(autoincrement())
-  dsoCodUsuario String @db.VarChar(50)
+  dsoCodUsuario Int @db.Int
   dsoCodActividad String @db.Char(3)
   dsoCodDestinatario Int @db.Int
   dsoCodEstado String @db.Char(3)
@@ -84,22 +84,23 @@ model dom_solicitudes {
   dsoInstrucciones String? @db.VarChar(500)
   dsoFchSolicitud DateTime
   // relaciones
-  usuario gen_usuarios @relation(fields: [dsoCodUsuario], references: [usuUsuario])
+  gestion dom_gestion? 
+  usuario gen_usuarios @relation(fields: [dsoCodUsuario], references: [usuId])
   destinatario dom_destinatarios @relation(fields: [dsoCodDestinatario], references: [ddtId])
   barrio gen_barrios @relation(fields: [dsoCodBarrio], references: [gbrCodigo])
   actividad dom_actividades @relation(fields: [dsoCodActividad], references: [dacCodigo])
   estado enum_estados @relation(fields: [dsoCodEstado], references: [eneCodigo])
-  gestion dom_gestion[]
 }
 
 model dom_gestion {
   dgoId Int @id @default(autoincrement())
-  dgoCodSolicitud Int
+  dgoCodSolicitud Int @unique
   dgoCodCentroC String @db.Char(3)
   dgoCodMensajero BigInt @db.BigInt
   dgoValor Decimal? @db.Decimal(10,2)
   dgoVrAdicional Decimal? @db.Decimal(10,2)
   dgoFchEntrega DateTime?
+  dgoObservaciones String? @db.VarChar(250)
   // relaciones
   centroscosto con_centroscosto @relation(fields: [dgoCodCentroC], references: [cctCodigo])
   mensajero dom_mensajeros @relation(fields: [dgoCodMensajero], references: [msjCodigo])

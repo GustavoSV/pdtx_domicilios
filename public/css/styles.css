@@ -1,0 +1,85 @@
+/* Estilos globales */
+html,
+body {
+  height: 100%;
+  overflow-x: hidden;
+}
+
+/* Desactivar el hover para elementos específicos */
+.no-hover:hover {
+  background-color: transparent !important; /* Evita que cambie el fondo */
+}
+
+/* Estructura principal */
+.app-container {
+  display: flex;
+  min-height: calc(100vh - 3.25rem); /* Altura total menos altura del navbar */
+}
+
+/* Área de contenido */
+.content-area {
+  flex: 1;
+  padding: 1.5rem;
+  background-color: #fafafa;
+}
+
+/* Indicadores de estado */
+.status-indicator {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  margin-right: 10px;
+}
+
+.status-new {
+  background-color: #00d1b2;
+}
+.status-progress {
+  background-color: #ffdd57;
+}
+.status-complete {
+  background-color: #48c774;
+}
+
+/* Ocultar menú en móvil */
+@media screen and (max-width: 768px) {
+  .sidebar {
+    width: 70px;
+  }
+
+  .sidebar .menu-label {
+    text-align: center;
+    font-size: 0.6em;
+  }
+
+  .sidebar .menu-list a span:not(.icon) {
+    display: none;
+  }
+
+  .sidebar .menu-list a .icon {
+    margin-right: 0;
+  }
+
+  .content-area {
+    padding: 1rem;
+  }
+}
+
+/* Eliminar el borde azul predeterminado */
+.tabs.is-toggle li.is-active a {
+  border-color: transparent; /* Elimina el borde azul */
+}
+
+/* Estilo para el tab activo */
+.tabs.is-toggle li.is-active a.custom-tab {
+  background-color: #00d1b2; /* Color primario (puedes cambiarlo) */
+  color: white; /* Texto blanco */
+  border-radius: 4px; /* Bordes redondeados */
+}
+
+/* Hover para los tabs no activos */
+.tabs.is-toggle li:not(.is-active) a.custom-tab:hover {
+  background-color: #f5f5f5; /* Fondo claro al pasar el mouse */
+  color: #363636; /* Texto oscuro */
+}

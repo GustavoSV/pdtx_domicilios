@@ -1,4 +1,5 @@
 import { Manager } from "./Manager.js";
+import { convertirSolicitudes } from "../utils/convertirSolicitudes.js";  // Importar la función de conversión
 import { validarRelacion } from "../utils/databaseValidators.js"; // Importar la función de validación
 
 export class SolicitudesManager extends Manager {
@@ -34,6 +35,7 @@ export class SolicitudesManager extends Manager {
             dgoFchEntrega: true,
             dgoCodCentroC: true,
             dgoCodMensajero: true,
+            dgoObservaciones: true,
             centroscosto: {
               select: {
                 cctNombreCC: true,
@@ -52,7 +54,7 @@ export class SolicitudesManager extends Manager {
         dsoFchSolicitud: "desc"
       }
     )
-    return this.convertirSolicitudes(activas);
+    return convertirSolicitudes(activas);
   };
 
   async getSolicitudesCompletadas(userId) { // este método no está en el Manager general
@@ -94,7 +96,7 @@ export class SolicitudesManager extends Manager {
         dsoFchSolicitud: "desc"
       })
     
-    return this.convertirSolicitudes(completadas);
+    return convertirSolicitudes(completadas);
   };
 
   async getObtenerSolicitudPorId(id) { // este método no está en el Manager general
@@ -131,6 +133,7 @@ export class SolicitudesManager extends Manager {
             dgoFchEntrega: true,
             dgoCodCentroC: true,
             dgoCodMensajero: true,
+            dgoObservaciones: true,
             centroscosto: {
               select: {
                 cctNombreCC: true,
@@ -146,7 +149,7 @@ export class SolicitudesManager extends Manager {
         },
       }
     );
-    return this.convertirSolicitudes(solicitud);
+    return convertirSolicitudes(solicitud);
   };
 
   async getMisSolicitudes(userId, options = {}) {
@@ -159,7 +162,7 @@ export class SolicitudesManager extends Manager {
       const where = {
         dsoCodUsuario: userId,
         OR: [
-          { dsomId: isNumeric(searchTerm) ? { equals: parseInt(searchTerm) } : undefined },
+          { dsoId: isNumeric(searchTerm) ? { equals: parseInt(searchTerm) } : undefined },
           { 
             destinatario: {
               ddtNombre: { contains: searchTerm },
@@ -206,6 +209,7 @@ export class SolicitudesManager extends Manager {
               dgoFchEntrega: true,
               dgoCodCentroC: true,
               dgoCodMensajero: true,
+              dgoObservaciones: true,
               centroscosto: {
                 select: {
                   cctNombreCC: true,
@@ -223,7 +227,7 @@ export class SolicitudesManager extends Manager {
         orderBy: { dsoFchSolicitud: 'desc' }, // Ordenar por fecha de solicitud descendente
       });
       
-      const dataConvertida = this.convertirSolicitudes(result.data);
+      const dataConvertida = convertirSolicitudes(result.data);
       result.data = dataConvertida;
 
       return result;
@@ -251,7 +255,7 @@ export class SolicitudesManager extends Manager {
       // Construir el objeto de datos con las relaciones usuario, destinatario, barrio, actividad, estado usando CONNECT
       const recordData = {
         usuario: {
-          connect: { usuUsuario: userId }, // Conectar con el usuario existente
+          connect: { usuId: userId }, // Conectar con el usuario existente
         },
         actividad: {
           connect: { dacCodigo: data.dsoCodActividad }, // Conectar con la actividad existente
@@ -280,39 +284,6 @@ export class SolicitudesManager extends Manager {
     } catch (error) {
       console.error('SolicitudesManager - Error al crear la solicitud:', error.message);
       throw error;
-    }
-  }
-
-  // Convertir los arrays de objetos en campos normales por tratarse de una relación 1:1
-  convertirSolicitudes(data) {
-    const convertirUnaSolicitud = (solicitud) => {
-      return {
-        ...solicitud,
-        dataGestion: solicitud.gestion && solicitud.gestion.length > 0 ? {
-          dgoId: solicitud.gestion[0].dgoId,
-          dgoFchEntrega: solicitud.gestion[0].dgoFchEntrega,
-          dgoValor: solicitud.gestion[0].dgoValor,
-          dgoVrAdicional: solicitud.gestion[0].dgoVrAdicional,
-          centroscosto: {
-            cctCodigo: solicitud.gestion[0].centroscosto?.cctCodigo,
-            cctNombreCC: solicitud.gestion[0].centroscosto?.cctNombreCC,
-            cctCodUEN: solicitud.gestion[0].centroscosto?.cctCodUEN
-          },
-          mensajero: {
-            msjCodigo: solicitud.gestion[0].mensajero?.msjCodigo,
-            msjNombre: solicitud.gestion[0].mensajero?.msjNombre
-          }
-        } : null
-      };
-    };
-
-    // Comprobar si data es un array o un objeto individual
-    if (Array.isArray(data)) {
-      return data.map(solicitud => convertirUnaSolicitud(solicitud));
-    } else if (data && typeof data === 'object') {
-      return convertirUnaSolicitud(data);
-    } else {
-      return data; // Si no es array ni objeto, devolver tal cual
     }
   }
 };

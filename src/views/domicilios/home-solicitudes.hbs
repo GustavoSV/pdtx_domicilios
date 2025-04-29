@@ -5,7 +5,6 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Inicio - Solicitante</title>
-  {{!-- <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css"> --}}
 </head>
 <body>
   <!-- Menú -->
@@ -14,7 +13,6 @@
   <!-- Contenido Principal -->
   <section class="section">
     <div class="container">
-      <!-- Encabezado -->
       <h1 class="title">¡Hola, {{user.username}}!</h1>
 
       <!-- Resumen de Solicitudes -->
@@ -36,18 +34,7 @@
                   </tr>
                 </thead>
                 <tbody id="solicitudes-activas-table">
-                  {{!-- {{#each solicitudesActivas}}
-                    <tr>
-                      <td>{{this.dsoId}}</td>
-                      <td>{{this.destinatario.ddtNombre}}</td>
-                      <td>{{this.estado.eneEstado}}</td>
-                      <td class="has-text-centered">
-                        <a href="/solicitudes/detalle-solicitudes/{{this.dsoId}}" class="has-text-primary" title="Ver detalles">
-                          <i class="fas fa-arrow-right"></i>
-                        </a>
-                      </td>
-                    </tr>
-                  {{/each}} --}}
+
                 </tbody>
               </table>
             </div>
@@ -71,19 +58,7 @@
                   </tr>
                 </thead>
                 <tbody id="solicitudes-completadas-table">
-                  {{!-- {{#each solicitudesCompletadas}}
-                    <tr>
-                      <td>{{this.dsoId}}</td>
-                      <td>{{this.destinatario.ddtNombre}}</td>
-                      <td>
-                        <span class="fecha-entrega" data-fecha="{{this.dataGestion.dgoFchEntrega}}"></span>
-                      </td>
-                      <td class="has-text-centered">
-                        <a href="/solicitudes/detalle-solicitudes/{{this.dsoId}}" class="has-text-primary" title="Ver detalles">
-                          <i class="fas fa-arrow-right"></i>
-                        </a>
-                    </tr>
-                  {{/each}} --}}
+
                 </tbody>
               </table>
             </div>
