@@ -148,3 +148,28 @@ solicitudesRouter.delete('/:id', isAuthenticated, async (req, res) => {  // /api
     res.status(500).json({ error: 'Error interno del servidor' });
   }
 });
+
+// Anular una solicitud
+solicitudesRouter.put('/anular/:id', isAuthenticated, async (req, res) => {  // /api/solicitudes/anular/:id
+  const solicitudesManager = new SolicitudesManager(prisma);
+  try {
+    const { id } = req.params;
+    if (! id) {
+      return res.status(400).json({ error: 'No se recibe correctamente el parámetro id' });
+    }
+    const where = { dsoId: parseInt(id) }
+    
+    // se invoca el método delete directamente del Manager general pasando el where
+    const anular = await solicitudesManager.update(
+      where,
+      { dsoCodEstado: req.body.dsoCodEstado }
+    ); 
+    if (!anular) {
+      return res.status(404).json({ error: 'Solicitud no encontrada' });
+    }
+    res.json({ mensaje: 'Solicitud anulada correctamente' });
+  } catch (error) {
+    console.error("solicitudesRouter - Error al anular la solicitud:", error.message);
+    res.status(500).json({ error: 'Error interno del servidor' });
+  }
+});

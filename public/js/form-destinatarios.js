@@ -96,7 +96,6 @@ document.addEventListener('DOMContentLoaded', async () => {
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(formData),
         });
-console.log('form-destinatarios - response:', response);
 
         if (!response.ok) throw new Error(`Error al guardar el destinatario: ${response.statusText}`);
         window.location.href = '/destinatarios/lista-destinatarios'; // Redirigir después de guardar

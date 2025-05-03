@@ -53,19 +53,26 @@
       </div>
       
       <div class="box">
-        <!-- Elemento para buscar alineado a la derecha -->
-        <div class="level-right mb-4">
-          <div class="level-item">
-            <div class="field has-addons">
-              <div class="control">
-                <input id="search-input" class="input" type="text" placeholder="Buscar solicitud"/>
-              </div>
-              <div class="control">
-                <a id="search-button" class="button is-primary">
-                  <span class="icon">
-                    <i class="fas fa-search"></i>
-                  </span>
-                </a>
+        <div class="level">
+          <div class="level-left">
+            <div class="level-item">
+              <h3 id="gestion-titulo-grupo" class="title is-5">Solicitudes recientes</h3>
+            </div>
+          </div>
+          <!-- Elemento para buscar alineado a la derecha -->
+          <div class="level-right">
+            <div class="level-item">
+              <div class="field has-addons">
+                <div class="control">
+                  <input id="search-input" class="input" type="text" placeholder="Buscar solicitud"/>
+                </div>
+                <div class="control">
+                  <a id="search-button" class="button is-primary">
+                    <span class="icon">
+                      <i class="fas fa-search"></i>
+                    </span>
+                  </a>
+                </div>
               </div>
             </div>
           </div>
@@ -90,14 +97,14 @@
             </tbody>
           </table>
         </div>
-
-        <!-- Paginación -->
-        <nav class="pagination is-centered" role="navigation" aria-label="pagination">
-          <a id="prev-page" class="pagination-previous">Página Anterior</a>
-          <a id="next-page" class="pagination-next">Página Siguiente</a>
-          <span id="pagination-info" class="pagination-info"></span>
-        </nav>
       </div>
+
+      <!-- Paginación -->
+      <nav class="pagination is-centered" role="navigation" aria-label="pagination">
+        <a id="prev-page" class="pagination-previous">Página Anterior</a>
+        <a id="next-page" class="pagination-next">Página Siguiente</a>
+        <span id="pagination-info" class="pagination-info"></span>
+      </nav>
     </div>
   </section>
 

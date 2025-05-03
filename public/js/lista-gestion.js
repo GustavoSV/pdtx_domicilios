@@ -9,6 +9,7 @@ document.addEventListener('DOMContentLoaded', () => {
   // obtener elementos a cargar
   const elementosTabs = document.querySelectorAll('.tabs li');
   const tablaSolicitudes = document.getElementById('solicitudes-table-body');
+  const tituloGrupo = document.getElementById('gestion-titulo-grupo');
   const prevPageButton = document.getElementById('prev-page');
   const nextPageButton = document.getElementById('next-page');
   const paginationInfo = document.getElementById('pagination-info');
@@ -53,12 +54,19 @@ document.addEventListener('DOMContentLoaded', () => {
   const loadSolicitudes = async (page = 1, estado) => {
     try {
       if (estado === 'SO') {
+        tituloGrupo.innerHTML = 'Solicitudes sin gestionar';
         columnaVrble.innerHTML = 'Dirección, Barrio';
       }
       else if (estado === 'EP') {
+        tituloGrupo.innerHTML = 'Solicitudes en trámite';
         columnaVrble.innerHTML = 'Mensajero';
       }
+      else if (estado === 'ET') {
+        tituloGrupo.innerHTML = 'Solicitudes completadas';
+        columnaVrble.innerHTML = 'Fecha de Entrega';
+      }
       else {
+        tituloGrupo.innerHTML = 'Todas las Solicitudes';
         columnaVrble.innerHTML = 'Fecha de Entrega';
       }
       const size = 10;

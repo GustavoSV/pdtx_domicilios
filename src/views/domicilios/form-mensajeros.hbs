@@ -3,18 +3,18 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Formulario Destinatario</title>
+  <title>Formulario Mensajero</title>
 </head>
 <body>
   <!-- Menú -->
-    {{> menu-solic }}
+    {{> menu-gestion }}
 
     <section class="section">
       <div class="container">
-        <h1 class="title" id="form-title">Formulario Destinatario</h1>
+        <h1 class="title" id="form-title">Formulario Mensajero</h1>
 
         <div id="formulario" class="box">
-          <form id="destinatario-form">
+          <form id="mensajero-form">
 
             <!-- Campo ID (solo visible en edición) -->
             <div class="field is-horizontal">
@@ -24,8 +24,23 @@
               <div class="field-body">
                 <div class="field is-narrow" style="width: 150px;">
                   <div class="control">
-                    <input class="input" id="destinatario-id" type="text" placeholder="ID Destinatario" value="{{idDestinatario}}" disabled="true">
+                    <input class="input" id="mensajero-id" type="text" placeholder="ID Mensajero" value="{{idMensajero}}" disabled="true">
                   </div>
+                </div>
+              </div>
+            </div>
+
+            {{!-- Código --}}
+            <div class="field is-horizontal">
+              <div class="field-label is-normal">
+                <label class="label">Identificación</label>
+              </div>
+              <div class="field-body">
+                <div class="field">
+                  <div class="control">
+                    <input class="input" id="msjCodigo" type="text" placeholder="Identificación Mensajero">
+                  </div>
+                  <p class="help">Este campo es requerido</p>
                 </div>
               </div>
             </div>
@@ -38,7 +53,7 @@
               <div class="field-body">
                 <div class="field">
                   <div class="control">
-                    <input class="input" id="destinatario-nombre" type="text" placeholder="Nombre">
+                    <input class="input" id="msjNombre" type="text" placeholder="Nombre">
                   </div>
                   <p class="help">Este campo es requerido</p>
                 </div>
@@ -53,39 +68,9 @@
               <div class="field-body">
                 <div class="field">
                   <div class="control">
-                    <input class="input" id="destinatario-direccion" type="text" placeholder="Dirección">
+                    <input class="input" id="msjDireccion" type="text" placeholder="Dirección">
                   </div>
                   <p class="help">Este campo es requerido</p>
-                </div>
-              </div>
-            </div>
-
-            <!-- Barrio -->
-            <div class="field is-horizontal">
-              <div class="field-label is-normal">
-                <label class="label">Barrio</label>
-              </div>
-              <div class="field-body">
-                <div class="field is-narrow">
-                  <div class="control">
-                    <div class="select">
-                      <select id="destinatario-municipio">
-                        <!-- Acá se cargarán dinámicamente los municipios -->
-                      </select>
-                    </div>
-                  </div>
-                  <p class="help">Seleccione el Municipio</p>
-                </div>
-
-                <div class="field is-narrow">
-                  <div class="control">
-                    <div class="select is-fullwidth">
-                      <select id="destinatario-barrio">
-                        <!-- Acá se cargarán dinámicamente los barrios de un municipio -->
-                      </select>
-                    </div>
-                  </div>
-                  <p class="help">Seleccione el Barrio</p>
                 </div>
               </div>
             </div>
@@ -98,7 +83,22 @@
               <div class="field-body">
                 <div class="field">
                   <div class="control">
-                    <input class="input" id="destinatario-telefono" type="text" placeholder="Teléfono">
+                    <input class="input" id="msjTelefono" type="text" placeholder="Teléfono">
+                  </div>
+                  <p class="help">Este campo es requerido</p>
+                </div>
+              </div>
+            </div>
+
+            <!-- Email -->
+            <div class="field is-horizontal">
+              <div class="field-label is-normal">
+                <label class="label">Email</label>
+              </div>
+              <div class="field-body">
+                <div class="field">
+                  <div class="control">
+                    <input class="input" id="msjEmail" type="text" placeholder="Email">
                   </div>
                 </div>
               </div>
@@ -108,11 +108,11 @@
             <div class="field is-grouped is-grouped-centered">
               <p class="control">
                 <button class="button is-primary" id="submit-button">
-                  Crear Destinatario
+                  Crear Mensajero
                 </button>
               </p>
               <p class="control">
-                <a class="button is-light" href="/destinatarios/lista-destinatarios">
+                <a class="button is-light" href="/mensajeros/lista-mensajeros">
                   Cancelar
                 </a>
               </p>
@@ -124,9 +124,6 @@
       </div>
 
     </section>
-    <script>
-      const userId = {{{jsonify userId}}}; // ID del usuario autenticado
-    </script>
-    <script type="module" src="/js/form-destinatarios.js"></script>
+    <script type="module" src="/js/form-mensajeros.js"></script>
 </body>
 </html>

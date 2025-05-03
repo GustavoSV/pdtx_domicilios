@@ -17,28 +17,26 @@
         <form id="gestion-form">
 
           <!-- Campo ID (solo visible en edición) -->
-          <fieldset disabled>
-            <div class="field is-horizontal">
-              <div class="field-label is-normal" style="width: 80px;">
-                <label class="label">ID</label>
+          <div class="field is-horizontal">
+            <div class="field-label is-normal" style="width: 80px;">
+              <label class="label">ID</label>
+            </div>
+            <div class="field-body">
+              <div class="field is-narrow" style="width: 150px;">
+                <div class="control">
+                  <input class="input" id="gestion-id" type="text" placeholder="ID Solicitud" value="{{idSolicitud}}">
+                </div>
               </div>
-              <div class="field-body">
-                <div class="field is-narrow" style="width: 150px;">
-                  <div class="control">
-                    <input class="input" id="gestion-id" type="text" placeholder="ID Solicitud" value="{{idSolicitud}}">
-                  </div>
-                </div>
-                <div class="field-label is-normal">
-                  <label class="label">Solicitante</label>
-                </div>
-                <div class="field">
-                  <div class="control">
-                    <input class="input" id="gestion-solicitante" type="text" placeholder="Solicitante">
-                  </div>
+              <div class="field-label is-normal">
+                <label class="label">Solicitante</label>
+              </div>
+              <div class="field">
+                <div class="control">
+                  <input class="input" id="gestion-solicitante" type="text" placeholder="Solicitante">
                 </div>
               </div>
             </div>
-          </fieldset>
+          </div>
 
           <!-- Destinatario -->
           <div class="field is-horizontal">
@@ -68,20 +66,6 @@
             </div>
           </div>
 
-          <!-- Teléfono -->
-          {{!-- <div class="field is-horizontal">
-            <div class="field-label is-normal">
-              <label class="label">Teléfono</label>
-            </div>
-            <div class="field-body">
-              <div class="field">
-                <div class="control">
-                  <input class="input" id="gestion-telefono" type="text" placeholder="Teléfono">
-                </div>
-              </div>
-            </div>
-          </div> --}}
-
           <!-- Actividad -->
           <div class="field is-horizontal">
             <div class="field-label is-normal">
@@ -99,12 +83,12 @@
           <!-- Indicaciones -->
           <div class="field is-horizontal">
             <div class="field-label is-normal">
-              <label class="label">Indicaciones</label>
+              <label class="label">Instrucciones</label>
             </div>
             <div class="field-body">
               <div class="field">
                 <div class="control">
-                  <input class="input" id="gestion-indicaciones" type="text" placeholder="Indicaciones">
+                  <input class="input" id="gestion-instrucciones" type="text" placeholder="Instrucciones">
                 </div>
               </div>
             </div>
@@ -127,6 +111,23 @@
             </div>
           </div>
 
+          <!-- Centro de costos -->
+          <div class="field is-horizontal">
+            <div class="field-label is-normal">
+              <label class="label">Centro de costos</label>
+            </div>
+            <div class="field-body">
+              <div class="field is-narrow">
+                <div class="control">
+                  <div class="select">
+                    <select id="gestion-centrocostos"></select>
+                  </div>
+                </div>
+                <p class="help">Este campo es requerido</p>
+              </div>
+            </div>
+          </div>
+
           <!-- Estado Completado - Valor y Valor adicional -->
           <div class="field is-horizontal">
             <div class="field-label is-normal">
@@ -136,8 +137,14 @@
             <div class="field-body">
               <div class="field-label is-normal" style="width: 250px;">
                 <div class="is-flex is-align-items-center">
-                  <label class="label mr-2">¿Se completó el domicilio?</label>
-                  <input type="checkbox" id="domicilio-completado" style="width: 1.5rem; height: 1.5rem;">
+                  <label class="label mr-2">Completado</label>
+                  <input type="checkbox" id="gestion-completado" style="width: 1.5rem; height: 1.5rem;">
+                </div>
+              </div>
+              <div class="field-label is-normal" style="width: 250px;">
+                <div class="is-flex is-align-items-center">
+                  <label class="label mr-2">Anulado</label>
+                  <input type="checkbox" id="gestion-anulado" style="width: 1.5rem; height: 1.5rem;">
                 </div>
               </div>
               <div class="field-label is-normal">
@@ -152,23 +159,6 @@
                 <div class="control">
                   <input class="input" id="gestion-valor-adicional" type="text" placeholder="Valor adicional">
                 </div>
-              </div>
-            </div>
-          </div>
-
-          <!-- Centro de costos -->
-          <div class="field is-horizontal">
-            <div class="field-label is-normal">
-              <label class="label">Centro de costos</label>
-            </div>
-            <div class="field-body">
-              <div class="field is-narrow">
-                <div class="control">
-                  <div class="select">
-                    <select id="gestion-centrocostos"></select>
-                  </div>
-                </div>
-                <p class="help">Este campo es requerido</p>
               </div>
             </div>
           </div>
@@ -204,6 +194,6 @@
       </div>
     </div>
   </section>
-
+  <script type="module" src="/js/form-gestion.js"></script>
 </body>
 </html>

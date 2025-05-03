@@ -120,6 +120,31 @@ viewsRouter.get("/destinatarios/form-destinatarios/:id", isAuthenticated, async 
   })
 });
 
+// RUTAS PARA EL MANEJO DE LOS MENSAJEROS
+// Ruta protegida para la lista de mensajeros
+viewsRouter.get("/mensajeros/lista-mensajeros", isAuthenticated, (req, res) => {
+  res.render("domicilios/lista-mensajeros.hbs", { title: "Mensajeros" });
+});
+
+// Ruta protegida para la creación de mensajeros
+viewsRouter.get("/mensajeros/form-mensajeros", isAuthenticated, (req, res) => {
+  res.render("domicilios/form-mensajeros.hbs", { 
+    title: "Crear Mensajero",
+    userId: req.session.user.id
+  });
+});
+
+// Ruta protegida para la modificación de mensajeros
+viewsRouter.get("/mensajeros/form-mensajeros/:id", isAuthenticated, async (req, res) => {
+  const { id } = req.params;
+  
+  res.render("domicilios/form-mensajeros.hbs", {
+    idMensajero: id,
+    title: "Actualizar Mensajero",
+    userId: req.session.user.id
+  })
+});
+
 // Rutas SOLO PARA EJEMPLO DE FUTURAS OPCIONES
 // Rutas para otras aplicaciones (ejemplo)
 viewsRouter.get("/pedidos", isAuthenticated, (req, res) => {

@@ -1,28 +1,13 @@
 import express from 'express';
 import { isAuthenticated } from '../middlewares/isAuthenticated.mid.js';
 import { DestinatariosManager } from '../managers/DestinatariosManager.js';
+import { MensajerosManager } from '../managers/MensajerosManager.js';
+import { serializeBigInt } from '../utils/serializeBigInt.js';
 import { PrismaClient } from '@prisma/client';
 
 const prisma = new PrismaClient();
 
 export const destinatariosRouter = express.Router();
-
-destinatariosRouter.get('/', isAuthenticated, async (req, res) => {
-  const destinatariosManager = new DestinatariosManager(prisma);
-  try {
-    const destinatarios = await destinatariosManager.getAll(
-      {}, 
-      {}, 
-      {
-        ddtNombre: "asc"
-      });
-    
-    res.json({ destinatarios });
-  } catch (error) {
-    console.error('Error al obtener los destinatarios:', error.message);
-    res.status(500).json({ error: 'Error interno del servidor' });
-  }
-});
 
 destinatariosRouter.get('/lista-destinatarios', isAuthenticated, async (req, res) => {
   const destinatariosManager = new DestinatariosManager(prisma);
@@ -39,6 +24,23 @@ destinatariosRouter.get('/lista-destinatarios', isAuthenticated, async (req, res
     }
     
     res.json(destinatarios);
+  } catch (error) {
+    console.error('Error al obtener los destinatarios:', error.message);
+    res.status(500).json({ error: 'Error interno del servidor' });
+  }
+});
+
+destinatariosRouter.get('/', isAuthenticated, async (req, res) => {
+  const destinatariosManager = new DestinatariosManager(prisma);
+  try {
+    const destinatarios = await destinatariosManager.getAll(
+      {}, 
+      {}, 
+      {
+        ddtNombre: "asc"
+      });
+    
+    res.json({ destinatarios });
   } catch (error) {
     console.error('Error al obtener los destinatarios:', error.message);
     res.status(500).json({ error: 'Error interno del servidor' });

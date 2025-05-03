@@ -94,7 +94,6 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     // Cargar destinatarios
     const resDestinatarios = await fetchData('/api/destinatarios');
-    
     populateSelect(destinatarioSelect, resDestinatarios.destinatarios, solicitudData?.dsoCodDestinatario, 'ddtId', 'ddtNombre');
 
     // Evento para cargar barrios dinámicamente

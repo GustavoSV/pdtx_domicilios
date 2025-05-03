@@ -1,12 +1,12 @@
 let searchTerm = ''; // Término de búsqueda
 
 document.addEventListener('DOMContentLoaded', () => {
-  const tableBody = document.getElementById('destinatarios-table-body');
+  const tableBody = document.getElementById('mensajeros-table-body');
   const prevPageButton = document.getElementById('prev-page');
   const nextPageButton = document.getElementById('next-page');
   const paginationInfo = document.getElementById('pagination-info');
   const searchInput = document.getElementById('search-input');
-  const searchButton = document.getElementById('search-button');  
+  const searchButton = document.getElementById('search-button'); 
 
   let currentPage = 1;
   let totalPages = 1;
@@ -15,7 +15,7 @@ document.addEventListener('DOMContentLoaded', () => {
   searchButton.addEventListener('click', () => {
     searchTerm = searchInput.value.trim();
     
-    loadDestinatarios(1); // Reiniciar la paginación al buscar
+    loadMensajeros(1); // Reiniciar la paginación al buscar
   });
 
   // Event delegation para los botones de Editar y Eliminar
@@ -28,7 +28,7 @@ document.addEventListener('DOMContentLoaded', () => {
       // Mostrar SweetAlert2 para confirmar eliminación
       const { isConfirmed } = await Swal.fire({
         title: '¿Estás seguro?',
-        text: `Esta acción eliminará el Destinatario con ID: ${id}`,
+        text: `Esta acción eliminará el Mensajero con ID: ${id}`,
         icon: 'warning',
         showCancelButton: true,
         confirmButtonColor: '#d33',
@@ -39,24 +39,24 @@ document.addEventListener('DOMContentLoaded', () => {
 
       if (isConfirmed) {
         try {
-          const response = await fetch(`/api/destinatarios/${id}`, {
+          const response = await fetch(`/api/mensajeros/${id}`, {
             method: 'DELETE',
             headers: { 'Content-Type': 'application/json' },
           });
 
           if (!response.ok) {
-            throw new Error('Error al eliminar el destinatario');
+            throw new Error('Error al eliminar el mensajero');
           }
 
           Swal.fire({
             icon: 'success',
-            title: 'Destinatario eliminado',
-            text: `El destinatario con ID: ${id} ha sido eliminado correctamente.`,
+            title: 'Mensajero eliminado',
+            text: `El mensajero con ID: ${id} ha sido eliminado correctamente.`,
           }).then(() => {
             window.location.reload(); // Recargar la página
           });
         } catch (error) {
-          console.error('lista-destinatarios - Error al eliminar el destinatario:', error.message);
+          console.error('lista-mensajeros - Error al eliminar el mensajero:', error.message);
         }
       }
       return; // Salir del listener después de manejar el evento
@@ -67,12 +67,12 @@ document.addEventListener('DOMContentLoaded', () => {
     if (editarButton) {
       const id = editarButton.dataset.id;
       
-      window.location.href = `/destinatarios/form-destinatarios/${id}`;
+      window.location.href = `/mensajeros/form-mensajeros/${id}`;
     }
   });
 
-  // Función para cargar los destinatarios
-  const loadDestinatarios = async (page = 1) => {
+  // Función para cargar los mensajeros
+  const loadMensajeros = async (page = 1) => {
     try {
       const size = 10;
       const queryParams = new URLSearchParams({
@@ -80,33 +80,32 @@ document.addEventListener('DOMContentLoaded', () => {
         pageSize: size,
         searchTerm, // Enviar el término de búsqueda al backend
       }).toString();
-      console.log('loadDestinatarios - queryParams:', queryParams);
       
-      
-      const response = await fetch(`/api/destinatarios/lista-destinatarios?${queryParams}`, {
+      const responseM = await fetch(`/api/mensajeros/paginate?${queryParams}`, {
         headers: { Cookie: document.cookie },
       });
-      const destinatarios = await response.json();
-      
+      const mensajeros = await responseM.json();
+
       // Limpiar la tabla
       tableBody.innerHTML = '';
 
-      // Renderizar los destinatarios
-      destinatarios.data.forEach((elemento) => {
+      // Renderizar los mensajeros
+      mensajeros.data.forEach((elemento) => {
         const row = document.createElement('tr');
 
         row.innerHTML = `
-          <td>${elemento.ddtId}</td>
-          <td>${elemento.ddtNombre}</td>
-          <td>${elemento.ddtDireccion}</td>
-          <td>${elemento.barrio.gbrNombre}</td>
-          <td>${elemento.ddtTelefono}</td>
+          <td>${elemento.msjId}</td>
+          <td>${elemento.msjCodigo}</td>
+          <td>${elemento.msjNombre}</td>
+          <td>${elemento.msjDireccion}</td>
+          <td>${elemento.msjTelefono}</td>
+          <td>${elemento.msjEmail}</td>
           <td>
-            <button class="boton-editar button is-small is-warning" data-id="${elemento.ddtId}">Editar</button>
+            <button class="boton-editar button is-small is-warning" data-id="${elemento.msjId}"><span class="icon"><i class="fas fa-edit"></i></span></button>
           </td>
           <td>
             ${elemento.totalSolicitudes === 0
-              ? `<button class="boton-eliminar button is-small is-danger" data-id="${elemento.ddtId}">Eliminar</button>`
+              ? `<button class="boton-eliminar button is-small is-danger" data-id="${elemento.msjId}"><span class="icon"><i class="fas fa-cancel"></i></span></button>`
               : ''
             }
           </td>
@@ -116,31 +115,31 @@ document.addEventListener('DOMContentLoaded', () => {
       });
 
       // Actualizar la paginación
-      currentPage = destinatarios.pagination.page;
-      totalPages = destinatarios.pagination.totalPages;
-      prevPageButton.disabled = !destinatarios.pagination.previousPage;
-      nextPageButton.disabled = !destinatarios.pagination.afterPage;
+      currentPage = mensajeros.pagination.page;
+      totalPages = mensajeros.pagination.totalPages;
+      prevPageButton.disabled = !mensajeros.pagination.previousPage;
+      nextPageButton.disabled = !mensajeros.pagination.afterPage;
 
       // Mostrar información de paginación
       paginationInfo.textContent = `Página ${currentPage} de ${totalPages}`;
     } catch (error) {
-      console.error('Error al cargar los destinatarios:', error.message);
+      console.error('Error al cargar los mensajeros:', error.message);
     }
   };
 
   // Cargar la primera página
-  loadDestinatarios(currentPage);
+  loadMensajeros(currentPage);
 
   // Manejar la paginación
   prevPageButton.addEventListener('click', () => {
     if (currentPage > 1) {
-      loadDestinatarios(currentPage - 1);
+      loadMensajeros(currentPage - 1);
     }
   });
 
   nextPageButton.addEventListener('click', () => {
     if (currentPage < totalPages) {
-      loadDestinatarios(currentPage + 1);
+      loadMensajeros(currentPage + 1);
     }
   });
 });

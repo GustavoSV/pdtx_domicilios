@@ -1,26 +1,24 @@
-<!-- src/views/solicitudes/lista-solicitudes.hbs -->
 <!DOCTYPE html>
 <html lang="es">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Mis Solicitudes</title>
+  <title>Mensajeros</title>
 </head>
 <body>
   <!-- Menú -->
-  {{> menu-solic }}
-  
+  {{> menu-gestion }}
+
   <section class="section">
     <div class="container">
-      <h1 class="title">Mis Solicitudes</h1>
-
+      <h1 class="title">Mensajeros</h1>
       <div class="box">
-        <!-- Búsqueda de solicitudes -->
+        <!-- Búsqueda de mensajeros -->
         <div class="level-right mb-4">
           <div class="level-item">
             <div class="field has-addons">
               <div class="control">
-                <input id="search-input" class="input" type="text" placeholder="Buscar solicitud"/>
+                <input id="search-input" class="input" type="text" placeholder="Buscar mensajero"/>
               </div>
               <div class="control">
                 <a id="search-button" class="button is-primary">
@@ -33,22 +31,21 @@
           </div>
         </div>
 
-        <!-- Tabla de Solicitudes -->
+        <!-- Tabla de Mensajeros -->
         <table class="table is-hoverable is-fullwidth">
           <thead>
             <tr>
               <th>ID</th>
-              <th>Actividad</th>
-              <th>Destinatario</th>
-              <th>Estado</th>
-              <th>Fecha Solicitud</th>
-              <th>Fecha Entrega</th>
-              <th>Detalle</th>
+              <th>Código</th>
+              <th>Nombre</th>
+              <th>Dirección</th>
+              <th>Teléfono</th>
+              <th>Email</th>
               <th>Acciones</th>
               <th></th>
             </tr>
           </thead>
-          <tbody id="solicitudes-table-body">
+          <tbody id="mensajeros-table-body">
             <!-- Las filas se cargarán dinámicamente -->
           </tbody>
         </table>
@@ -60,12 +57,14 @@
         <a id="next-page" class="pagination-next">Página Siguiente</a>
         <span id="pagination-info" class="pagination-info"></span>
       </nav>
+    </div>
 
-      <!-- Botón para Regresar -->
-      {{!-- <a href="/solicitudes/solicitudes" class="button is-primary mt-4">Regresar</a> --}}
+    <!-- Botón Destacado -->
+    <div class="has-text-centered">
+      <a href="/mensajeros/form-mensajeros" class="button is-primary is-large mt-4">Nuevo Mensajero</a>
     </div>
   </section>
 
-  <script type="module" src="/js/lista-solicitudes.js"></script>
+  <script type="module" src="/js/lista-mensajeros.js"></script>
 </body>
 </html>
