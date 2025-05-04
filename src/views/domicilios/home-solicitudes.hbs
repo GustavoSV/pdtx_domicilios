@@ -68,10 +68,14 @@
 
       <!-- Botón Destacado -->
       <div class="has-text-centered">
-        <a href="/solicitudes/form-solicitudes" class="button is-primary is-large">Solicitar Domicilio</a>
+        <a href="/solicitudes/form-solicitudes?origin={{origin}}" class="button is-primary is-large">Solicitar Domicilio</a>
       </div>
     </div>
   </section>
+  <script>
+    const userId = {{{jsonify user.id}}}; // ID del usuario autenticado
+    const origin = "{{origin}}";
+  </script>
   <script type="module" src="/js/home-solicitudes.js"></script>
 </body>
 </html>

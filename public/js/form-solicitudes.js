@@ -144,7 +144,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         });
 
         if (!response.ok) throw new Error('Error al guardar la solicitud');
-        window.location.href = '/solicitudes/lista-solicitudes'; // Redirigir después de guardar
+        window.location.href = returnUrl;  // Redirigir después de guardar
       } catch (error) {
         console.error('Error:', error.message);
         Swal.fire('Error', 'Ocurrió un problema al guardar la solicitud', 'error');

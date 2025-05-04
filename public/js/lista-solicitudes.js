@@ -71,7 +71,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (editarButton) {
       const id = editarButton.dataset.id;
       
-      window.location.href = `/solicitudes/form-solicitudes/${id}`; // Redirigir a la página de edición
+      window.location.href = `/solicitudes/form-solicitudes/${id}/${origin}`; // Redirigir a la página de edición
     }
   });
 
@@ -105,7 +105,7 @@ document.addEventListener('DOMContentLoaded', () => {
           <td>${formatearFecha(solicitud.dsoFchSolicitud)}</td>
           <td>${solicitud.gestion?.dgoFchEntrega ? formatearFecha(solicitud.gestion.dgoFchEntrega) : '-'}</td>
           <td class="has-text-centered">
-            <a href="/solicitudes/detalle-solicitudes/${solicitud.dsoId}" class="has-text-primary">
+            <a href="/solicitudes/detalle-solicitudes/${solicitud.dsoId}/${origin}" class="has-text-primary">
               <i class="fas fa-arrow-right"></i>
             </a>
           </td>

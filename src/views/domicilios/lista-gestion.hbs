@@ -5,7 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Gestión de Solicitudes</title>
   <link rel="stylesheet" href="/css/styles.css">
-  <script type="module" src="/js/lista-gestion.js"></script>
 </head>
 <body>
   {{> menu-gestion }}
@@ -107,6 +106,10 @@
       </nav>
     </div>
   </section>
-
+  <script>
+    const userId = {{{jsonify user.id}}}; // ID del usuario autenticado
+    const origin = "{{origin}}";
+  </script>
+  <script type="module" src="/js/lista-gestion.js"></script>
 </body>
 </html>

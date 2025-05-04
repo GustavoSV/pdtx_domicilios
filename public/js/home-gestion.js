@@ -1,6 +1,3 @@
-// Función para formatear la fecha
-import { formatearFecha } from './utils.js';
-
 document.addEventListener('DOMContentLoaded', () => {
   // obtener elementos a cargar
   const solicitudesPendientes = document.getElementById('solicitudes-pendientes');
@@ -49,7 +46,7 @@ const loadSolicitudes = async (solicitudesPendientes, solicitudesEnProceso, soli
         <td>${solicitud.dsoDireccion}, ${solicitud.barrio.gbrNombre}</td>
         <td><span class="tag ${color}">${solicitud.estado.eneEstado}</span></td>
         <td class="has-text-centered">
-          <a href="/solicitudes/detalle-solicitudes/${solicitud.dsoId}" class="has-text-primary" title="Ver detalles">
+          <a href="/solicitudes/detalle-solicitudes/${solicitud.dsoId}/${origin}" class="has-text-primary" title="Ver detalles">
             <i class="fas fa-arrow-right"></i>
           </a>
         </td>

@@ -95,36 +95,19 @@
           <a id="buttonEditar" class="button is-warning">Editar</a>
 
           <!-- Botón para regresar -->
-          <a href="javascript:history.back()" class="button is-primary">Regresar</a>
+          {{!-- <a href="javascript:history.back()" class="button is-primary">Regresar</a> --}}
+          <a href="javascript:void(0)" class="button is-light" onclick="window.history.back(); return false;">Regresar</a>
         </div>
       </div>
 
-      {{!-- <table class="table is-hoverable">
-        <thead>
-          <tr>
-            <th>Col 1</th>
-            <th>Col 2</th>
-            <th>Col 3</th>
-          </tr>
-        <tbody>
-          <tr>
-            <td>Two</td>
-            <td>Four</td>
-            <td>Five</td>
-          </tr>
-          <tr>
-            <td>Three</td>
-            <td>Four</td>
-            <td>Five</td>
-          </tr>
-          <tr>
-            <td>Two</td>
-            <td>Four</td>
-            <td>Five</td>
-          </tr>
-        </tbody>
-      </table> --}}
     </section>
+    <script>
+       // ID del usuario autenticado
+      const userId = {{{jsonify userId}}};
+      // Definimos la URL de retorno en el frontend y el origen
+      const returnUrl = "{{returnUrl}}";
+      const origin = "{{origin}}";
+    </script>
     <script type="module" src="/js/detalle-solicitudes.js"></script>
   </body>
 </html>

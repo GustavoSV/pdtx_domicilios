@@ -18,6 +18,9 @@ document.addEventListener('DOMContentLoaded', () => {
   const columnaVrble = document.getElementById('colVariable');
   const botonGestionar = document.getElementById('boton-gestionar');
 
+  console.log('lista-gestion.js - userId:', userId);
+  console.log('lista-gestion.js - origin:', origin);
+
   // Manejar la búsqueda
   searchButton.addEventListener('click', () => {
     searchTerm = searchInput.value.trim();
@@ -116,7 +119,7 @@ document.addEventListener('DOMContentLoaded', () => {
           <td>${colVariable}</td>
           <td><span class="tag ${color}">${solicitud.estado.eneEstado}</span></td>
           <td class="has-text-centered">
-            <a href="/solicitudes/detalle-solicitudes/${solicitud.dsoId}" class="has-text-primary">
+            <a href="/solicitudes/detalle-solicitudes/${solicitud.dsoId}/${origin}" class="has-text-primary">
               <i class="fas fa-arrow-right"></i>
             </a>
           </td>

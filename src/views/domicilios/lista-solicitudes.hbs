@@ -65,7 +65,10 @@
       {{!-- <a href="/solicitudes/solicitudes" class="button is-primary mt-4">Regresar</a> --}}
     </div>
   </section>
-
+  <script>
+    const userId = {{{jsonify user.id}}}; // ID del usuario autenticado
+    const origin = "{{origin}}";
+  </script>
   <script type="module" src="/js/lista-solicitudes.js"></script>
 </body>
 </html>

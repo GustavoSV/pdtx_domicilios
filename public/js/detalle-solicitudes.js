@@ -47,12 +47,12 @@ document.addEventListener('DOMContentLoaded', () => {
       gestionObservaciones.textContent = domicilio.gestion.dgoObservaciones || '';
     }
 
-    // COnfigurar el botón de editar
-    buttonEditar.setAttribute('href', `/solicitudes/form-solicitudes/${domicilio.dsoId}`);
+    // Configurar el botón de editar
+    buttonEditar.setAttribute('href', `/solicitudes/form-solicitudes/${domicilio.dsoId}/${origin}`);
     buttonEditar.setAttribute('data-estado', domicilio.dsoCodEstado);
     
     // Deshabilitar el botón si el estado no es "SO"
-    if (domicilio.dsoCodEstado !== 'SO') {
+    if (domicilio.dsoCodEstado !== 'SO' || domicilio.dsoCodUsuario !== userId) {
       buttonEditar.setAttribute('disabled', 'disabled');
       buttonEditar.style.pointerEvents = 'none'; // Evitar clics
       buttonEditar.style.opacity = '0.5'; // Añadir estilo visual

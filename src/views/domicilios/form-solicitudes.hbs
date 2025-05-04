@@ -139,6 +139,8 @@
               </div>
             </div>
 
+            <input type="hidden" name="origin" value="{{origin}}">
+
             <!-- Botones de acción -->
             <div class="field is-grouped is-grouped-centered">
               <p class="control">
@@ -147,7 +149,7 @@
                 </button>
               </p>
               <p class="control">
-                <a class="button is-light" href="/solicitudes/lista-solicitudes">
+                <a class="button is-light" href="{{returnUrl}}">
                   Cancelar
                 </a>
               </p>
@@ -159,6 +161,9 @@
     <!-- src/views/solicitudes/form-solicitudes.hbs -->
     <script>
       const userId = {{{jsonify userId}}}; // ID del usuario autenticado
+      // Definimos la URL de retorno en el frontend
+      const returnUrl = "{{returnUrl}}";
+      const origin = "{{origin}}";
     </script>
     <script type="module" src="/js/form-solicitudes.js"></script>
   </body>

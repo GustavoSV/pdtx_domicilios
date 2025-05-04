@@ -10,9 +10,11 @@ viewsRouter.get("/", (req, res) => {
 
 // Ruta protegida para la Solicitud de Domicilios
 viewsRouter.get("/solicitudes/solicitudes", isAuthenticated, async (req, res) => {
+  const origin = req.query.origin || 'solicitud'; // Por defecto, 'solicitud'
   try {
     res.render("domicilios/home-solicitudes.hbs", {
       user: req.session.user,
+      origin
     });
   } catch (error) {
     console.error("Error al cargar el home-solicitudes:", error.message);
@@ -21,10 +23,14 @@ viewsRouter.get("/solicitudes/solicitudes", isAuthenticated, async (req, res) =>
 });
 
 // Detalles de una solicitud
-viewsRouter.get('/solicitudes/detalle-solicitudes/:id', isAuthenticated, async (req, res) => {
+viewsRouter.get('/solicitudes/detalle-solicitudes/:id/:origin', isAuthenticated, async (req, res) => {
   try {
-    const { id } = req.params;
-    res.render('domicilios/detalle-solicitudes.hbs', { idSolicitud: id });
+    const { id, origin } = req.params;
+    res.render('domicilios/detalle-solicitudes.hbs', { 
+      idSolicitud: id,
+      userId: req.session.user.id,
+      origin
+    });
   } catch (error) {
     console.error('Error al obtener los detalles del domicilio:', error.message);
     res.status(500).send('Error interno del servidor');
@@ -33,34 +39,58 @@ viewsRouter.get('/solicitudes/detalle-solicitudes/:id', isAuthenticated, async (
 
 // Ruta protegida para la lista de solicitudes
 viewsRouter.get("/solicitudes/lista-solicitudes", isAuthenticated, (req, res) => {
-  res.render("domicilios/lista-solicitudes.hbs", { title: "Mis Solicitudes" });
+  const origin = req.query.origin || 'solicitud'; // Por defecto, 'solicitud'
+  res.render("domicilios/lista-solicitudes.hbs", { 
+    title: "Mis Solicitudes",
+    user: req.session.user,
+    origin
+  });
 });
 
 // Ruta protegida para la creación de domicilios
 viewsRouter.get("/solicitudes/form-solicitudes", isAuthenticated, (req, res) => {
+  const origin = req.query.origin || 'solicitud'; // Por defecto, 'solicitud'
+  
+  const isValidOrigin = ['gestion', 'solicitud'].includes(origin);
+  let returnUrl = 'xxx';
+  if (isValidOrigin) {
+    returnUrl = origin === 'gestion' ? '/gestion/dashboard' : '/solicitudes/lista-solicitudes';
+  }
+  
   res.render("domicilios/form-solicitudes.hbs", { 
     title: "Crear Solicitud",
-    userId: req.session.user.id
+    userId: req.session.user.id,
+    returnUrl // Pasar la URL de cancelación a la vista
   });
 });
 
 // Ruta protegida para la modificación de domicilios
-viewsRouter.get("/solicitudes/form-solicitudes/:id", isAuthenticated, async (req, res) => {
-  const { id } = req.params;
+viewsRouter.get("/solicitudes/form-solicitudes/:id/:origin", isAuthenticated, async (req, res) => {
+  const { id, origin } = req.params;
+
+  const isValidOrigin = ['gestion', 'solicitud'].includes(origin);
+  let returnUrl = 'xxx';
+  if (isValidOrigin) {
+    returnUrl = origin === 'gestion' ? '/gestion/dashboard' : '/solicitudes/lista-solicitudes';
+  }
   
   res.render("domicilios/form-solicitudes.hbs", {
     idDomicilio: id,
     title: "Actualizar Solicitud",
-    userId: req.session.user.id
+    userId: req.session.user.id,
+    origin,
+    returnUrl
   })
 });
 
 // RUTAS PARA LA GESTION DE DOMICILIOS
 // Ruta protegida para la gestión de los domicilios
 viewsRouter.get("/gestion/dashboard", isAuthenticated, async (req, res) => {
+  const origin = req.query.origin || 'gestion'; // Por defecto, 'gestion'
   try {
     res.render("domicilios/home-gestion.hbs",  {
-      user: req.session.user,
+      userId: req.session.user.id,
+      origin
     });
   } catch (error) {
     console.error("Error al cargar el home-gestion:", error.message);
@@ -69,9 +99,11 @@ viewsRouter.get("/gestion/dashboard", isAuthenticated, async (req, res) => {
 });
 
 viewsRouter.get("/gestion/lista-gestion", isAuthenticated, async (req, res) => {
+  const origin = req.query.origin || 'gestion'; // Por defecto, 'gestion'
   try {
     res.render("domicilios/lista-gestion.hbs", {
       user: req.session.user,
+      origin
     });
   } catch (error) {
     console.error("Error al cargar el lista-gestion:", error.message);
