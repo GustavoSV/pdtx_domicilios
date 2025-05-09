@@ -119,9 +119,9 @@ document.addEventListener('DOMContentLoaded', async () => {
         dsoCodBarrio: barrioSelect.value,
         dsoTelefono: form.querySelector('#solicitud-telefono').value,
         dsoInstrucciones: form.querySelector('#solicitud-instrucciones').value,
-        dsoFchSolicitud: isEdition 
-          ? solicitudData.domFchSolicitud // Usar la fecha existente en edición
-          : new Date().toISOString(),     // Usar la fecha actual en creación
+        // dsoFchSolicitud: isEdition 
+        //   ? solicitudData.dsoFchSolicitud // Usar la fecha existente en edición
+        //   : getColombiaDate('date_object'),     // Usar la fecha actual en creación
         dsoCodEstado: isEdition
           ? solicitudData.dsoCodEstado
           : "SO",

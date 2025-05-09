@@ -1,13 +1,41 @@
 // src/routes/solicitudes.routes.js
 import express from 'express';
 import { isAuthenticated } from '../middlewares/isAuthenticated.mid.js';
+import { validateDatosRequeridosSolicitud, validateIdExistente } from '../middlewares/validateSolicitud.mid.js';
 import { SolicitudesManager } from '../managers/SolicitudesManager.js';
 import { serializeBigInt } from '../utils/serializeBigInt.js';
 import { PrismaClient } from '@prisma/client';
+import { getColombiaDateFormat } from '../utils/colombiaDateTime.js';
 
 export const solicitudesRouter = express.Router();
 
 const prisma = new PrismaClient();
+
+// Obtener mis solicitudes paginadas (API)
+solicitudesRouter.get('/lista-solicitudes', isAuthenticated, async (req, res) => { 
+  const solicitudesManager = new SolicitudesManager(prisma);
+  try {
+    const userId = req.session.user.id;
+    const { page = 1, pageSize = 20, searchTerm = '' } = req.query;
+
+    // Obtener las solicitudes paginadas del usuario
+    const misSolicitudes = await solicitudesManager.getMisSolicitudes(
+      userId, 
+      { 
+        page: parseInt(page), pageSize: parseInt(pageSize), searchTerm 
+      });
+
+    if (!misSolicitudes) {
+      return res.status(404).json({ error: 'No se encontraron solicitudes' });
+    }
+    
+    const misSolicitudesSerializadas = serializeBigInt(misSolicitudes);
+    res.json(misSolicitudesSerializadas);
+  } catch (error) {
+    console.error('Error al obtener las solicitudes del usuario:', error.message);
+    res.status(500).json({ error: 'Error interno del servidor' });
+  }
+});
 
 // Obtener solicitudes activas y completadas (API)
 solicitudesRouter.get('/', isAuthenticated, async (req, res) => {  // /api/solicitudes
@@ -36,32 +64,6 @@ solicitudesRouter.get('/', isAuthenticated, async (req, res) => {  // /api/solic
   }
 });
 
-// Obtener mis solicitudes paginadas (API)
-solicitudesRouter.get('/lista-solicitudes', isAuthenticated, async (req, res) => { 
-  const solicitudesManager = new SolicitudesManager(prisma);
-  try {
-    const userId = req.session.user.id;
-    const { page = 1, pageSize = 20, searchTerm = '' } = req.query;
-
-    // Obtener las solicitudes paginadas del usuario
-    const misSolicitudes = await solicitudesManager.getMisSolicitudes(
-      userId, 
-      { 
-        page: parseInt(page), pageSize: parseInt(pageSize), searchTerm 
-      });
-
-    if (!misSolicitudes) {
-      return res.status(404).json({ error: 'No se encontraron solicitudes' });
-    }
-    
-    const misSolicitudesSerializadas = serializeBigInt(misSolicitudes);
-    res.json(misSolicitudesSerializadas);
-  } catch (error) {
-    console.error('Error al obtener las solicitudes del usuario:', error.message);
-    res.status(500).json({ error: 'Error interno del servidor' });
-  }
-});
-
 // Obtener detalles de una solicitud (API)
 solicitudesRouter.get('/:id', isAuthenticated, async (req, res) => {  // /api/solicitudes/:id
   const solicitudesManager = new SolicitudesManager(prisma);
@@ -83,17 +85,33 @@ solicitudesRouter.get('/:id', isAuthenticated, async (req, res) => {  // /api/so
 });
 
 // Crear una nueva solicitud (API)
-solicitudesRouter.post('/', isAuthenticated, async (req, res) => {  // /api/solicitudes
+solicitudesRouter.post('/', isAuthenticated, validateDatosRequeridosSolicitud, async (req, res) => {  // /api/solicitudes
   const solicitudesManager = new SolicitudesManager(prisma);
   const userId = req.session.user.id; // Obtener el ID del usuario autenticado
   
   try {
-    if (!req.body.dsoCodActividad || !req.body.dsoCodDestinatario || 
-        !req.body.dsoCodBarrio || !req.body.dsoCodEstado || !req.body.dsoDireccion) {
-      return res.status(400).json({ error: 'Faltan datos requeridos' });
-    }
+    const {
+      dsoCodActividad,
+      dsoCodDestinatario,  
+      dsoDireccion,
+      dsoCodBarrio,
+      dsoTelefono,
+      dsoInstrucciones,
+      dsoCodEstado,
+    } = req.body;
+
+    const data = {
+      dsoCodActividad,
+      dsoCodDestinatario: parseInt(dsoCodDestinatario),  
+      dsoDireccion,
+      dsoCodBarrio,
+      dsoTelefono,
+      dsoInstrucciones,
+      dsoCodEstado,
+      dsoFchSolicitud: getColombiaDateFormat('prisma'),
+    };
     
-    const nuevaSolicitud = await solicitudesManager.postNuevaSolicitud(req.body, userId);
+    const nuevaSolicitud = await solicitudesManager.postNuevaSolicitud(data, userId);
     res.json(nuevaSolicitud);
   } catch (error) {
     console.error('solicitudesRouter - Error al crear la solicitud:', error.message);
@@ -102,18 +120,12 @@ solicitudesRouter.post('/', isAuthenticated, async (req, res) => {  // /api/soli
 });
 
 // Actualizar una solicitud existente (API)
-solicitudesRouter.put('/:id', isAuthenticated, async (req, res) => {  // /api/solicitudes/:id
+solicitudesRouter.put('/:id', isAuthenticated, validateIdExistente, validateDatosRequeridosSolicitud, async (req, res) => {  // /api/solicitudes/:id
   const solicitudesManager = new SolicitudesManager(prisma);
   try {
     const { id } = req.params;
     const where = { dsoId: parseInt(id) }
-    if (isNaN(id)) {
-      return res.status(400).json({ error: 'El ID debe ser un número' });
-    }
-    if (!req.body.dsoId || !req.body.dsoCodActividad || !req.body.dsoCodDestinatario || 
-        !req.body.dsoCodBarrio || !req.body.dsoCodEstado || !req.body.dsoDireccion) {
-      return res.status(400).json({ error: 'Faltan datos requeridos' });
-    }
+
     const solicitudActualizada = await solicitudesManager.update(where, req.body);
     if (!solicitudActualizada) {
       return res.status(404).json({ error: 'Solicitud no encontrada' });
@@ -128,13 +140,10 @@ solicitudesRouter.put('/:id', isAuthenticated, async (req, res) => {  // /api/so
 });
 
 // Eliminar una solicitud (API)
-solicitudesRouter.delete('/:id', isAuthenticated, async (req, res) => {  // /api/solicitudes/:id
+solicitudesRouter.delete('/:id', isAuthenticated, validateIdExistente, async (req, res) => {  // /api/solicitudes/:id
   const solicitudesManager = new SolicitudesManager(prisma);
   try {
     const { id } = req.params;
-    if (! id) {
-      return res.status(400).json({ error: 'No se recibe correctamente el parámetro id' });
-    }
     const where = { dsoId: parseInt(id) }
     
     // se invoca el método delete directamente del Manager general pasando el where
@@ -150,13 +159,10 @@ solicitudesRouter.delete('/:id', isAuthenticated, async (req, res) => {  // /api
 });
 
 // Anular una solicitud
-solicitudesRouter.put('/anular/:id', isAuthenticated, async (req, res) => {  // /api/solicitudes/anular/:id
+solicitudesRouter.put('/anular/:id', isAuthenticated, validateIdExistente, async (req, res) => {  // /api/solicitudes/anular/:id
   const solicitudesManager = new SolicitudesManager(prisma);
   try {
     const { id } = req.params;
-    if (! id) {
-      return res.status(400).json({ error: 'No se recibe correctamente el parámetro id' });
-    }
     const where = { dsoId: parseInt(id) }
     
     // se invoca el método delete directamente del Manager general pasando el where

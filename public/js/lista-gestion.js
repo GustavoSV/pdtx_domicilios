@@ -16,10 +16,6 @@ document.addEventListener('DOMContentLoaded', () => {
   const searchInput = document.getElementById('search-input');
   const searchButton = document.getElementById('search-button');
   const columnaVrble = document.getElementById('colVariable');
-  const botonGestionar = document.getElementById('boton-gestionar');
-
-  console.log('lista-gestion.js - userId:', userId);
-  console.log('lista-gestion.js - origin:', origin);
 
   // Manejar la búsqueda
   searchButton.addEventListener('click', () => {

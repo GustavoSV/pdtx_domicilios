@@ -1,65 +1,16 @@
 // src/routes/gestion.routes.js
 import express from 'express';
 import { isAuthenticated } from '../middlewares/isAuthenticated.mid.js';
+import { validateGestionEnProceso, validateGestionCompletada, validateGestionExistente } from '../middlewares/validateGestion.mid.js';
 import { SolicitudesManager } from '../managers/SolicitudesManager.js'; 
 import { GestionManager } from '../managers/GestionManager.js';
 import { serializeBigInt } from '../utils/serializeBigInt.js';
 import { PrismaClient } from '@prisma/client';
+import { getColombiaDateFormat, getTodayRangeUTC } from '../utils/colombiaDateTime.js';
 
 export const gestionRouter = express.Router();
 
 const prisma = new PrismaClient();
-
-// Obtener solicitudes pendientes, en proceso y completadas (API)
-gestionRouter.get('/', isAuthenticated, async (req, res) => { // /api/gestion
-  const solicitudesManager = new SolicitudesManager(prisma);
-  try {
-    // Obtener el número de solicitudes pendientes
-    const solicitudesPendientes = await solicitudesManager.count( { dsoCodEstado: "SO" } );
-
-    // Obtener el número de solicitudes en proceso
-    const solicitudesEnProceso = await solicitudesManager.count( { dsoCodEstado: "EP" } );
-
-    const now = new Date();
-    // Obtener la diferencia horaria en minutos (para Colombia es -5 * 60 = -300)
-    const offset = now.getTimezoneOffset();
-    // Ajustar la fecha para obtener la hora en Colombia
-    const colombiaTime = new Date(now.getTime() - offset * 60 * 1000);
-    const todayColombia = colombiaTime.toISOString().split('T')[0];
-    
-    const startOfDayColombia = new Date(`${todayColombia}T00:00:00.000Z`);
-    const endOfDayColombia = new Date(`${todayColombia}T23:59:59.999Z`);
-    
-    const solicitudesCompletadasHoy = await solicitudesManager.count({
-      AND: [
-        { dsoCodEstado: "ET" },
-        {
-          gestion: {
-            dgoFchEntrega: {
-              gte: startOfDayColombia,
-              lt: endOfDayColombia
-            }
-          }
-        }
-      ]
-    });
-    
-    const solicitudesRecientes = await solicitudesManager.getGestionSolicitudesRecientes();
-    const limite = 10; // número de solicitudes recientes a mostrar
-    const arrayLimitado = Object.values(solicitudesRecientes).slice(0, limite);
-    const recientesSerializadas = serializeBigInt(arrayLimitado);
-    
-    res.json({
-      solicitudesPendientes,
-      solicitudesEnProceso,
-      solicitudesCompletadasHoy,
-      recientesSerializadas,
-    });
-  } catch (error) {
-    console.error('Error al obtener las solicitudes:', error.message);
-    res.status(500).json({ error: 'Error interno del servidor' });
-  }
-});
 
 gestionRouter.get('/solicitudes-estado', isAuthenticated, async (req, res) => {
   const solicitudesManager = new SolicitudesManager(prisma);
@@ -83,6 +34,49 @@ gestionRouter.get('/solicitudes-estado', isAuthenticated, async (req, res) => {
   }
 });
 
+// Obtener solicitudes pendientes, en proceso y completadas (API)
+gestionRouter.get('/', isAuthenticated, async (req, res) => { // /api/gestion
+  const solicitudesManager = new SolicitudesManager(prisma);
+  try {
+    // Obtener el número de solicitudes pendientes
+    const solicitudesPendientes = await solicitudesManager.count( { dsoCodEstado: "SO" } );
+
+    // Obtener el número de solicitudes en proceso
+    const solicitudesEnProceso = await solicitudesManager.count( { dsoCodEstado: "EP" } );
+
+    const { startDate, endDate } = getTodayRangeUTC();
+    
+    const solicitudesCompletadasHoy = await solicitudesManager.count({
+      AND: [
+        { dsoCodEstado: "ET" },
+        {
+          gestion: {
+            dgoFchEntrega: {
+              gte: startDate,
+              lt: endDate
+            }
+          }
+        }
+      ]
+    });
+    
+    const solicitudesRecientes = await solicitudesManager.getGestionSolicitudesRecientes();
+    const limite = 10; // número de solicitudes recientes a mostrar
+    const arrayLimitado = Object.values(solicitudesRecientes).slice(0, limite);
+    const recientesSerializadas = serializeBigInt(arrayLimitado);
+    
+    res.json({
+      solicitudesPendientes,
+      solicitudesEnProceso,
+      solicitudesCompletadasHoy,
+      recientesSerializadas,
+    });
+  } catch (error) {
+    console.error('Error al obtener las solicitudes a gestionar:', error.message);
+    res.status(500).json({ error: 'Error interno del servidor' });
+  }
+});
+
 gestionRouter.get('/:id', isAuthenticated, async (req, res) => { // /api/gestion/:id
   const solicitudesManager = new SolicitudesManager(prisma);
   try {
@@ -102,13 +96,10 @@ gestionRouter.get('/:id', isAuthenticated, async (req, res) => { // /api/gestion
 });
 
 // Nueva gestión EnProceso
-gestionRouter.post('/', isAuthenticated, async (req, res) => {
+gestionRouter.post('/', isAuthenticated, validateGestionEnProceso, async (req, res) => {
   const gestionManager = new GestionManager(prisma);
   const solicitudesManager = new SolicitudesManager(prisma);
   try {
-    if (!req.body.dgoCodCentroC || !req.body.dgoCodMensajero) {
-      return res.status(400).json({ error: 'Faltan datos requeridos' });
-    }
     const nuevaGestion = await gestionManager.postCrearGestion(req.body);
     if (!nuevaGestion) {
       return res.status(404).json({ error: 'No se pudo crear la gestión' });
@@ -136,29 +127,39 @@ gestionRouter.post('/', isAuthenticated, async (req, res) => {
 });
 
 // Actualizar una Gestión a Completada
-gestionRouter.put('/:id', isAuthenticated, async (req, res) => {
+gestionRouter.put('/:id', isAuthenticated, validateGestionCompletada, validateGestionExistente, async (req, res) => {
   const gestionManager = new GestionManager(prisma);
   const solicitudesManager = new SolicitudesManager(prisma);
   try {
     const { id } = req.params;
     const where = { dgoId: parseInt(id) }
-    if (isNaN(id)) {
-      return res.status(400).json({ error: 'ID inválido' });
-    }
-    
-    const gestionExistente = await gestionManager.getUnique(where);
-    if (!gestionExistente) {
-      return res.status(404).json({ error: 'Gestión no encontrada' });
-    }
+
+    const {
+      dgoIdSolicitud,
+      dgoCodCentroC,
+      dgoCodMensajero,
+      dgoValor,
+      dgoVrAdicional,
+      dgoObservaciones
+    } = req.body;
+
+    const data = {
+      dgoIdSolicitud: parseInt(dgoIdSolicitud),
+      dgoCodCentroC,
+      dgoCodMensajero: BigInt(dgoCodMensajero),
+      dgoValor: parseFloat(dgoValor || 0),
+      dgoVrAdicional: parseFloat(dgoVrAdicional || 0),
+      dgoFchEntrega: getColombiaDateFormat('prisma'),
+      dgoObservaciones
+  }
 
     // Actualizar la gestión
-    const actualizada = await gestionManager.putActualizarGestion(where, req.body);
+    const actualizada = await gestionManager.putActualizarGestion(where, data);
     if (!actualizada) {
       return res.status(404).json({ error: 'No se pudo actualizar la gestión' });
     }
 
     // Actualizar el estado de la solicitud a "Completada"
-    const { dgoIdSolicitud } = req.body;
     const whereSolicitud = { dsoId: dgoIdSolicitud }
     
     const completada = await solicitudesManager.update(
@@ -177,22 +178,3 @@ gestionRouter.put('/:id', isAuthenticated, async (req, res) => {
     res.status(500).json({ error: 'Error interno del servidor' });
   }
 });
-
-// Actualizar el estado de una solicitud (API)
-// gestionRouter.post('/actualizar-estado/:id', isAuthenticated, async (req, res) => {
-//   const gestionManager = new GestionManager(prisma);
-//   try {
-//     const { id } = req.params;
-//     const { nuevoEstado } = req.body;
-
-//     // Actualizar el estado de la solicitud
-//     const resultado = await gestionManager.actualizarEstadoSolicitud(id, nuevoEstado);
-//     if (!resultado) {
-//       return res.status(404).json({ error: 'Solicitud no encontrada' });
-//     }
-//     res.json({ mensaje: 'Estado actualizado correctamente' });
-//   } catch (error) {
-//     console.error('Error al actualizar el estado:', error.message);
-//     res.status(500).json({ error: 'Error interno del servidor' });
-//   }
-// });

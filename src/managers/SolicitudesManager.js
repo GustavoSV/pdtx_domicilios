@@ -255,7 +255,7 @@ export class SolicitudesManager extends Manager {
       // Construir el objeto de datos con las relaciones usuario, destinatario, barrio, actividad, estado usando CONNECT
       const recordData = {
         usuario: {
-          connect: { usuId: userId }, // Conectar con el usuario existente
+          connect: { usuId: parseInt(userId) }, // Conectar con el usuario existente
         },
         actividad: {
           connect: { dacCodigo: data.dsoCodActividad }, // Conectar con la actividad existente

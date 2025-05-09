@@ -143,7 +143,6 @@ addEventListener('DOMContentLoaded', async () => {
             dgoValor: parseFloat(valorInput.value),
             dgoVrAdicional: valorAdicionalInput.value ? parseFloat(valorAdicionalInput.value) : 0,
             dgoObservaciones: observacionesInput.value || '',
-            dgoFchEntrega: new Date().toISOString(), // Fecha actual
             dsoCodEstado: 'ET', // Estado de la gestión
           };
           const completada = procesarDatos('completada', formData);
