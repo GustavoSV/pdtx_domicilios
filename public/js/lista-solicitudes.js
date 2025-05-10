@@ -96,12 +96,20 @@ document.addEventListener('DOMContentLoaded', () => {
       // Renderizar las solicitudes
       data.data.forEach((solicitud) => {
         const row = document.createElement('tr');
+        let color = '';
+        if (solicitud.dsoCodEstado === 'SO') {
+          color = 'is-danger';
+        } else if (solicitud.dsoCodEstado === 'EP') {
+          color = 'is-info';
+        } else if (solicitud.dsoCodEstado === 'ET') {
+          color = 'is-success';
+        }
 
         row.innerHTML = `
           <td>${solicitud.dsoId}</td>
           <td>${solicitud.actividad.dacDescripcion}</td>
           <td>${solicitud.destinatario.ddtNombre}</td>
-          <td>${solicitud.estado.eneEstado}</td>
+          <td><span class="tag ${color}">${solicitud.estado.eneEstado}</span></td>
           <td>${formatearFecha(solicitud.dsoFchSolicitud)}</td>
           <td>${solicitud.gestion?.dgoFchEntrega ? formatearFecha(solicitud.gestion.dgoFchEntrega) : '-'}</td>
           <td class="has-text-centered">
@@ -111,13 +119,12 @@ document.addEventListener('DOMContentLoaded', () => {
           </td>
           <td>
             ${solicitud.dsoCodEstado === 'SO'
-              ? `<button class="boton-editar button is-small is-warning" data-id="${solicitud.dsoId}">Editar</button>`
+              ? `<button class="boton-editar button is-small is-warning" data-id="${solicitud.dsoId}"><span class="icon"><i class="fas fa-edit"></i></span></button>`
               : ''
             }
-          </td>
-          <td>
+
             ${solicitud.dsoCodEstado === 'SO'
-              ? `<button class="boton-eliminar button is-small is-danger" data-id="${solicitud.dsoId}">Eliminar</button>`
+              ? `<button class="boton-eliminar button is-small is-danger" data-id="${solicitud.dsoId}"><span class="icon"><i class="fas fa-cancel"></i></span></button>`
               : ''
             }
           </td>

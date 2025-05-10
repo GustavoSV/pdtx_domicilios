@@ -5,7 +5,7 @@ import { validateDatosRequeridosSolicitud, validateIdExistente } from '../middle
 import { SolicitudesManager } from '../managers/SolicitudesManager.js';
 import { serializeBigInt } from '../utils/serializeBigInt.js';
 import { PrismaClient } from '@prisma/client';
-import { getColombiaDateFormat } from '../utils/colombiaDateTime.js';
+import { getColombiaDateFormat, getTodayRangeUTC } from '../utils/colombiaDateTime.js';
 
 export const solicitudesRouter = express.Router();
 
@@ -44,6 +44,23 @@ solicitudesRouter.get('/', isAuthenticated, async (req, res) => {  // /api/solic
     const userId = req.session.user.id;
     const solicitudesActivas = await solicitudesManager.getSolicitudesActivas(userId);
     const solicitudesCompletadas = await solicitudesManager.getSolicitudesCompletadas(userId);
+    // Obtener el número de solicitudes completadas hoy
+    const { startDate, endDate } = getTodayRangeUTC();
+    const solicitudesCompletadasHoy = await solicitudesManager.count({
+      AND: [
+        { dsoCodUsuario: userId },
+        { dsoCodEstado: "ET" },
+        {
+          gestion: {
+            dgoFchEntrega: {
+              gte: startDate,
+              lt: endDate
+            }
+          }
+        }
+      ]
+    });
+    
     // const objetoLimitado = Object.fromEntries(
     //   Object.entries(solicitudesCompletadas).slice(0, limite)
     // );
@@ -57,6 +74,7 @@ solicitudesRouter.get('/', isAuthenticated, async (req, res) => {  // /api/solic
     res.json({
       solicitudesActivas: solicitudesActivasSerializadas,
       solicitudesCompletadas: solicitudesCompletadasSerializadas,
+      solicitudesCompletadasHoy,
     });
   } catch (error) {
     console.error('Error al obtener las solicitudes:', error.message);

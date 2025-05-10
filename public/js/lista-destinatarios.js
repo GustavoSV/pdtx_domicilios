@@ -102,11 +102,10 @@ document.addEventListener('DOMContentLoaded', () => {
           <td>${elemento.barrio.gbrNombre}</td>
           <td>${elemento.ddtTelefono}</td>
           <td>
-            <button class="boton-editar button is-small is-warning" data-id="${elemento.ddtId}">Editar</button>
-          </td>
-          <td>
+            <button class="boton-editar button is-small is-warning" data-id="${elemento.ddtId}"><span class="icon"><i class="fas fa-edit"></i></span></button>
+
             ${elemento.totalSolicitudes === 0
-              ? `<button class="boton-eliminar button is-small is-danger" data-id="${elemento.ddtId}">Eliminar</button>`
+              ? `<button class="boton-eliminar button is-small is-danger" data-id="${elemento.ddtId}"><span class="icon"><i class="fas fa-cancel"></i></span></button>`
               : ''
             }
           </td>

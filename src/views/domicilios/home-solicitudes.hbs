@@ -19,9 +19,27 @@
       <div class="columns">
         <!-- Solicitudes Activas -->
         <div class="column">
+          <div class="box has-background-primary-95"> 
+            <article class="media">
+              <div class="media-left">
+                <span class="icon is-large has-text-danger">
+                  <i class="fas fa-clock fa-2x"></i>
+                </span>
+              </div>
+              <div class="media-content">
+                <div class="content">
+                  <p>
+                    <strong id="solicitudes-activas" class="is-size-4">0</strong>
+                    <br />
+                    <span>Solicitudes activas</span>
+                  </p>
+                </div>
+              </div>
+            </article>
+          </div>
           <div class="card">
             <header class="card-header">
-              <p class="card-header-title">Solicitudes Activas ({{solicitudesActivas.length}})</p>
+              <p class="card-header-title">Solicitudes Activas</p>
             </header>
             <div class="card-content">
               <table class="table is-hoverable">
@@ -43,6 +61,24 @@
 
         <!-- Últimas Solicitudes Completadas -->
         <div class="column">
+          <div class="box has-background-primary-90"> 
+            <article class="media">
+              <div class="media-left">
+                <span class="icon is-large has-text-success">
+                  <i class="fas fa-check-circle fa-2x"></i>
+                </span>
+              </div>
+              <div class="media-content">
+                <div class="content">
+                  <p>
+                    <strong id="solicitudes-completadas-hoy" class="is-size-4">0</strong>
+                    <br />
+                    <span>Completadas hoy</span>
+                  </p>
+                </div>
+              </div>
+            </article>
+          </div>
           <div class="card">
             <header class="card-header">
               <p class="card-header-title">Últimas Solicitudes Completadas</p>

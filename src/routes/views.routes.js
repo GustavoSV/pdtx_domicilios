@@ -26,10 +26,12 @@ viewsRouter.get("/solicitudes/solicitudes", isAuthenticated, async (req, res) =>
 viewsRouter.get('/solicitudes/detalle-solicitudes/:id/:origin', isAuthenticated, async (req, res) => {
   try {
     const { id, origin } = req.params;
+    const esGestion = origin === 'gestion';
     res.render('domicilios/detalle-solicitudes.hbs', { 
       idSolicitud: id,
       userId: req.session.user.id,
-      origin
+      origin,
+      esGestion,
     });
   } catch (error) {
     console.error('Error al obtener los detalles del domicilio:', error.message);
@@ -50,7 +52,7 @@ viewsRouter.get("/solicitudes/lista-solicitudes", isAuthenticated, (req, res) =>
 // Ruta protegida para la creación de domicilios
 viewsRouter.get("/solicitudes/form-solicitudes", isAuthenticated, (req, res) => {
   const origin = req.query.origin || 'solicitud'; // Por defecto, 'solicitud'
-  
+  const esGestion = origin === 'gestion';
   const isValidOrigin = ['gestion', 'solicitud'].includes(origin);
   let returnUrl = 'xxx';
   if (isValidOrigin) {
@@ -60,14 +62,15 @@ viewsRouter.get("/solicitudes/form-solicitudes", isAuthenticated, (req, res) => 
   res.render("domicilios/form-solicitudes.hbs", { 
     title: "Crear Solicitud",
     userId: req.session.user.id,
-    returnUrl // Pasar la URL de cancelación a la vista
+    returnUrl, // Pasar la URL de cancelación a la vista
+    esGestion,
   });
 });
 
 // Ruta protegida para la modificación de domicilios
 viewsRouter.get("/solicitudes/form-solicitudes/:id/:origin", isAuthenticated, async (req, res) => {
   const { id, origin } = req.params;
-
+  const esGestion = origin === 'gestion';
   const isValidOrigin = ['gestion', 'solicitud'].includes(origin);
   let returnUrl = 'xxx';
   if (isValidOrigin) {
@@ -79,7 +82,8 @@ viewsRouter.get("/solicitudes/form-solicitudes/:id/:origin", isAuthenticated, as
     title: "Actualizar Solicitud",
     userId: req.session.user.id,
     origin,
-    returnUrl
+    returnUrl,
+    esGestion,
   })
 });
 

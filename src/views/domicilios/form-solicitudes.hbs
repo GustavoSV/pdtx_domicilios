@@ -6,7 +6,11 @@
   </head>
   <body>
     <!-- Menú -->
-      {{> menu-solic }}
+      {{#if esGestion}}
+        {{> menu-gestion }}
+      {{else}}
+        {{> menu-solic }}
+      {{/if}}
 
     <section class="section">
       <div class="container">
