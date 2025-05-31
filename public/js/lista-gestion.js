@@ -95,6 +95,9 @@ document.addEventListener('DOMContentLoaded', () => {
         } else if (estado === 'EP') {
           colVariable = solicitud.gestion?.mensajero.msjNombre;
           botonGestionar = `<button class="boton-gestionar button is-small is-warning" data-id="${solicitud.dsoId}"><span class="icon"><i class="fas fa-edit"></i></span></button>`;
+        } else if (estado === 'ET') {
+          colVariable = formatearFecha(solicitud.gestion?.dgoFchEntrega);
+          botonGestionar = `<button class="boton-gestionar button is-small is-warning" data-id="${solicitud.dsoId}"><span class="icon"><i class="fas fa-edit"></i></span></button>`;
         } else {
           colVariable = formatearFecha(solicitud.gestion?.dgoFchEntrega);
         }

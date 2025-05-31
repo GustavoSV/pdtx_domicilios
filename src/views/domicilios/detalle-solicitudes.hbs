@@ -27,6 +27,10 @@
                 <td id="solicitud-id">{{idSolicitud}}</td>
               </tr>
               <tr>
+                <th>Solicitado por</th>
+                <td id="solicitud-usuario"></td>
+              </tr>
+              <tr>
                 <th>Estado</th>
                 <td id="solicitud-estado"></td>
               </tr>
@@ -51,25 +55,21 @@
                 <td id="solicitud-telefono"></td>
               </tr>
               <tr>
+                <th>Centro de costos</th>
+                <td id="solicitud-centro-costos"></td>
+              </tr>
+              <tr>
                 <th>Instrucciones</th>
                 <td id="solicitud-instrucciones"></td>
               </tr>
               <tr>
                 <th>Fecha de Solicitud</th>
                 <td id="gestion-fecha-solicitud">
-                  {{!-- <span
-                    class="fechas"
-                    data-fecha="{{domicilio.dsoFchSolicitud}}"
-                  ></span> --}}
                 </td>
               </tr>
               <tr>
                 <th>Fecha de Entrega</th>
                 <td id="gestion-fecha-entrega">
-                  {{!-- <span
-                    class="fechas"
-                    data-fecha="{{domicilio.dataGestion.dgoFchEntrega}}"
-                  ></span> --}}
                 </td>
               </tr>
               <tr>
@@ -83,10 +83,6 @@
               <tr>
                 <th>Vr adicional</th>
                 <td id="gestion-vr-adicional"></td>
-              </tr>
-              <tr>
-                <th>Centro de costos</th>
-                <td id="gestion-centro-costos"></td>
               </tr>
               <tr>
                 <th>Observaciones</th>

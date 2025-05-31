@@ -19,7 +19,8 @@ model con_centroscosto {
   cctCodUEN String @db.Char(5)
   cctNombreCC String @db.VarChar(30)
   // relaciones
-  gestiones dom_gestion[]
+  // gestiones dom_gestion[]
+  solicitudes dom_solicitudes[]
   uen gen_uen @relation(fields: [cctCodUEN], references: [uenCodigo])
 }
 
@@ -53,25 +54,6 @@ model dom_mensajeros {
   gestiones dom_gestion[]
 }
 
-// model dom_domicilios {
-//   domId Int @id @default(autoincrement())
-//   domCodUsuario String @db.VarChar(50)
-//   domCodActividad String @db.Char(3)
-//   domCodCentroC String @db.Char(3)
-//   domCodMensajero BigInt @db.BigInt
-//   domCodDestinatario Int? @db.Int
-//   domDestinatario String @db.VarChar(50)
-//   domDireccion String @db.VarChar(80)
-//   domCodBarrio String @db.Char(5)
-//   domTelefono String? @db.VarChar(80)
-//   domInstrucciones String? @db.VarChar(500)
-//   domValor Decimal? @db.Decimal(10,2)
-//   domVrAdicional Decimal? @db.Decimal(10,2)
-//   domFchSolicitud DateTime
-//   domFchEntrega DateTime?
-//   domCodEstado String @db.Char(3)
-// }
-
 model dom_solicitudes {
   dsoId Int @id @default(autoincrement())
   dsoCodUsuario Int @db.Int
@@ -79,10 +61,12 @@ model dom_solicitudes {
   dsoCodDestinatario Int @db.Int
   dsoCodEstado String @db.Char(3)
   dsoCodBarrio String @db.Char(5)
+  dsoCodCentroC String @db.Char(3)
   dsoDireccion String @db.VarChar(80)
   dsoTelefono String? @db.VarChar(80)
   dsoInstrucciones String? @db.VarChar(500)
   dsoFchSolicitud DateTime
+  dsoFchPago DateTime?
   // relaciones
   gestion dom_gestion? 
   usuario gen_usuarios @relation(fields: [dsoCodUsuario], references: [usuId])
@@ -90,6 +74,7 @@ model dom_solicitudes {
   barrio gen_barrios @relation(fields: [dsoCodBarrio], references: [gbrCodigo])
   actividad dom_actividades @relation(fields: [dsoCodActividad], references: [dacCodigo])
   estado enum_estados @relation(fields: [dsoCodEstado], references: [eneCodigo])
+  centroscosto con_centroscosto @relation(fields: [dsoCodCentroC], references: [cctCodigo])
 }
 
 model dom_gestion {
@@ -102,7 +87,7 @@ model dom_gestion {
   dgoFchEntrega DateTime?
   dgoObservaciones String? @db.VarChar(250)
   // relaciones
-  centroscosto con_centroscosto @relation(fields: [dgoCodCentroC], references: [cctCodigo])
+  // centroscosto con_centroscosto @relation(fields: [dgoCodCentroC], references: [cctCodigo])
   mensajero dom_mensajeros @relation(fields: [dgoCodMensajero], references: [msjCodigo])
   solicitud dom_solicitudes @relation(fields: [dgoCodSolicitud], references: [dsoId], onDelete: Cascade)
 }

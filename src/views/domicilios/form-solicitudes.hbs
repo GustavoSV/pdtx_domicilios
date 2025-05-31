@@ -19,7 +19,7 @@
         <div id="formulario" class="box">
           <form id="solicitud-form">
             <!-- Campo ID (solo visible en edición) -->
-            <fieldset disabled>
+            {{!-- <fieldset disabled>
               <div class="field is-horizontal">
                 <div class="field-label is-normal">
                   <label class="label">ID</label>
@@ -32,7 +32,35 @@
                   </div>
                 </div>
               </div>
-            </fieldset>
+            </fieldset> --}}
+
+            <!-- Campo ID (solo visible en edición) -->
+            <div class="field is-horizontal">
+              <div class="field-label is-normal">
+                <label class="label">ID</label>
+              </div>
+              <div class="field-body">
+                <div class="field is-narrow" style="width: 150px;">
+                  <div class="control">
+                    <input class="input" id="solicitud-id" type="text" placeholder="ID domicilio" value="{{idDomicilio}}" disabled="true">
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Usuario (solo visible en edición) -->
+            <div class="field is-horizontal">
+              <div class="field-label is-normal">
+                <label class="label">Usuario</label>
+              </div>
+              <div class="field-body">
+                <div class="field">
+                  <div class="control">
+                    <input class="input" id="solicitud-usuario" type="text" placeholder="Usuario" disabled="true">
+                  </div>
+                </div>
+              </div>
+            </div>
 
             <!-- Destinatario -->
             <div class="field is-horizontal">
@@ -122,6 +150,23 @@
                       <select id="solicitud-actividad">
                         <!-- Acá se cargarán dinámicamente las actividades -->
                       </select>
+                    </div>
+                  </div>
+                  <p class="help">Este campo es requerido</p>
+                </div>
+              </div>
+            </div>
+
+            <!-- Centro de costos -->
+            <div class="field is-horizontal">
+              <div class="field-label is-normal">
+                <label class="label">Centro de costos</label>
+              </div>
+              <div class="field-body">
+                <div class="field is-narrow">
+                  <div class="control">
+                    <div class="select">
+                      <select id="solicitud-centrocostos"></select>
                     </div>
                   </div>
                   <p class="help">Este campo es requerido</p>

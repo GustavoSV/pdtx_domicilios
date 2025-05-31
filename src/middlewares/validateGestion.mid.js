@@ -6,11 +6,11 @@ const prisma = new PrismaClient();
 function validateGestionEnProceso(req, res, next) {
   const {
     dgoIdSolicitud,
-    dgoCodCentroC,
+    // dgoCodCentroC,
     dgoCodMensajero,
   } = req.body;
 
-  if (!dgoIdSolicitud || !dgoCodCentroC || !dgoCodMensajero) {
+  if (!dgoIdSolicitud || !dgoCodMensajero) {
       return res.status(400).send('Faltan campos obligatorios');
   }
 
@@ -20,13 +20,13 @@ function validateGestionEnProceso(req, res, next) {
 function validateGestionCompletada(req, res, next) {
   const {
     dgoIdSolicitud,
-    dgoCodCentroC,
+    // dgoCodCentroC,
     dgoCodMensajero,
     dgoValor,
     dgoVrAdicional
   } = req.body;
 
-  if (!dgoIdSolicitud || !dgoCodCentroC || !dgoCodMensajero) {
+  if (!dgoIdSolicitud || !dgoCodMensajero) {
       return res.status(400).send('Faltan campos obligatorios');
   }
 

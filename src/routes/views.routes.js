@@ -181,6 +181,12 @@ viewsRouter.get("/mensajeros/form-mensajeros/:id", isAuthenticated, async (req, 
   })
 });
 
+// RUTAS PARA LOS REPORTES
+// Ruta protegida para el home reportes
+viewsRouter.get("/reportes/gestion", isAuthenticated, (req, res) => {
+  res.render("domicilios/reportes-gestion.hbs", { title: "Reportes de Gestión" });
+});
+
 // Rutas SOLO PARA EJEMPLO DE FUTURAS OPCIONES
 // Rutas para otras aplicaciones (ejemplo)
 viewsRouter.get("/pedidos", isAuthenticated, (req, res) => {

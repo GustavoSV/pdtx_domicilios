@@ -73,6 +73,27 @@ function getDateRangeUTC(date = null) {
   };
 }
 
+// Obtiene el rango de fechas para un mes específico en UTC
+function getMonthRangeUTC(month, year) {
+    // month es un número del 0 al 11 (enero = 0, diciembre = 11)
+    const dateInLocal = dayjs().tz('America/Bogota').year(year).month(month);
+
+    const startDate = dateInLocal.clone().startOf('month').utc().toISOString();
+    const endDate = dateInLocal.clone().endOf('month').utc().toISOString();
+
+    return { startDate, endDate };
+}
+
+// Obtiene el rango de fechas para un año específico en UTC
+function getYearRangeUTC(year) {
+    const dateInLocal = dayjs().tz('America/Bogota').year(year);
+
+    const startDate = dateInLocal.clone().startOf('year').utc().toISOString();
+    const endDate = dateInLocal.clone().endOf('year').utc().toISOString();
+
+    return { startDate, endDate };
+}
+
 /**
  * Obtiene la fecha y hora actual en Colombia según el formato solicitado.
  *
@@ -124,6 +145,8 @@ export {
   formatDateForColombia,
   getTodayRangeUTC,
   getDateRangeUTC,
+  getMonthRangeUTC,
+  getYearRangeUTC,
   getColombiaDateFormat,
   COLOMBIA_TIMEZONE
 }

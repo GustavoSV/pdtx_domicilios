@@ -15,7 +15,7 @@ export class GestionManager extends Manager {
       // Validar todas las relaciones
       await validarRelacion(this.prisma, 'dom_solicitudes', 'dsoId', data.dgoIdSolicitud, contextInfo);
       await validarRelacion(this.prisma, 'dom_mensajeros', 'msjCodigo', data.dgoCodMensajero, contextInfo);
-      await validarRelacion(this.prisma, 'con_centroscosto', 'cctCodigo', data.dgoCodCentroC, contextInfo);
+      // await validarRelacion(this.prisma, 'con_centroscosto', 'cctCodigo', data.dgoCodCentroC, contextInfo);
 
       // Construir el objeto de datos con las relaciones usuario, destinatario, barrio, actividad, estado usando CONNECT
       const recordData = {
@@ -25,15 +25,17 @@ export class GestionManager extends Manager {
         mensajero: {
           connect: { msjCodigo: parseInt(data.dgoCodMensajero) }, // Conectar con el barrio existente
         },
-        centroscosto: {
-          connect: { cctCodigo: data.dgoCodCentroC }, // Conectar con el estado existente
-        },
+        // centroscosto: {
+        //   connect: { cctCodigo: data.dgoCodCentroC }, // Conectar con el estado existente
+        // },
+        dgoCodCentroC: data.dgoCodCentroC || null, // ahora lo pasamos como un dato suelto
         dgoObservaciones: data.dgoObservaciones || null, // Permitir observaciones vacías
       };
       // Crear el registro
       const nuevaGestion = await this.model.create({
         data: recordData,
       });
+      
       return nuevaGestion;
     } catch (error) {
       console.error('Error al crear la gestión:', error.message);
@@ -58,9 +60,10 @@ export class GestionManager extends Manager {
         mensajero: {
           connect: { msjCodigo: parseInt(data.dgoCodMensajero) }, // Conectar con el barrio existente
         },
-        centroscosto: {
-          connect: { cctCodigo: data.dgoCodCentroC }, // Conectar con el estado existente
-        },
+        // centroscosto: {
+        //   connect: { cctCodigo: data.dgoCodCentroC }, // Conectar con el estado existente
+        // },
+        dgoCodCentroC: data.dgoCodCentroC || null, // ahora lo pasamos como un dato suelto
         dgoFchEntrega: data.dgoFchEntrega || new Date().toISOString(),
         dgoValor: data.dgoValor || null,
         dgoVrAdicional: data.dgoVrAdicional || null,

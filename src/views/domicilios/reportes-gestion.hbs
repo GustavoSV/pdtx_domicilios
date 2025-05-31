@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Reportes</title>
+</head>
+<body>
+  <!-- Menú -->
+  {{> menu-gestion }}
+
+  <section class="section">
+    <div class="container">
+      <h1 class="title">Reportes Gestión de Domicilios</h1>
+                <div class="field is-horizontal">
+                  <div class="field-label is-normal">
+                    <label class="label">Año:</label>
+                  </div>
+                  <div class="field-body">
+                    <div class="field">
+                      <div class="control">
+                        <input id="anio-input" class="input" type="number" min="2020" max="2030" placeholder="Selecciona el año">
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <div class="field-body">
+                    <div class="field">
+                      <div class="control">
+                        <div class="select">
+                          <select id="mes-select">
+                            <option value="">Selecciona un mes</option>
+                            <option value="0">Enero</option>
+                            <option value="1">Febrero</option>
+                            <option value="2">Marzo</option>
+                            <option value="3">Abril</option>
+                            <option value="4">Mayo</option>
+                            <option value="5">Junio</option>
+                            <option value="6">Julio</option>
+                            <option value="7">Agosto</option>
+                            <option value="8">Septiembre</option>
+                            <option value="9">Octubre</option>
+                            <option value="10">Noviembre</option>
+                            <option value="11">Diciembre</option>
+                          </select>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  
+                </div>
+
+      <div class="columns">
+        <div class="column">
+          <div class="card">
+            <header class="card-header">
+              <p class="card-header-title">Domicilios por usuario</p>
+            </header>
+            <div id="chart-bars" style="width: 100%; height: 350px;"></div>  
+          </div>
+        </div>
+        <div class="column">
+          <div class="card">
+            <header class="card-header">
+              <p class="card-header-title">Participación por Centros de Costos</p>
+            </header>
+            <div id="chart-donut" style="width: 100%; height: 350px;"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <script src="https://cdn.jsdelivr.net/npm/apexcharts "></script>
+  <script type="module" src="/js/reportes-gestion.js"></script>
+</body>
+</html>

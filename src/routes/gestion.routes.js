@@ -22,7 +22,7 @@ gestionRouter.get('/solicitudes-estado', isAuthenticated, async (req, res) => {
       { 
         page: parseInt(page), pageSize: parseInt(pageSize), searchTerm 
       });
-      
+    
     if (!solictudesEstado) {
       return res.status(404).json({ error: `No se encontraron solicitudes para el estado ${estado}` });
     }

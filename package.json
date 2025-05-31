@@ -12,12 +12,14 @@
   "license": "ISC",
   "dependencies": {
     "@prisma/client": "^6.4.1",
+    "apexcharts": "^4.7.0",
     "dayjs": "^1.11.13",
     "dayjs-ext": "^2.2.0",
     "dotenv": "^16.4.7",
     "express": "^4.21.2",
     "express-handlebars": "^8.0.1",
     "express-session": "^1.18.1",
+    "react-apexcharts": "^1.7.0",
     "sweetalert2": "^11.17.2"
   },
   "devDependencies": {

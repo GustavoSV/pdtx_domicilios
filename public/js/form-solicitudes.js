@@ -10,7 +10,9 @@ document.addEventListener('DOMContentLoaded', async () => {
   const barrioSelect = document.getElementById('solicitud-barrio');
   const destinatarioSelect = document.getElementById('solicitud-destinatario');
   const actividadSelect = document.getElementById('solicitud-actividad');
+  const centrocostosSelect = document.getElementById('solicitud-centrocostos');
   const idInput = document.getElementById('solicitud-id');
+  const UsuarioInput = document.getElementById('solicitud-usuario');
   const direccionInput = document.getElementById('solicitud-direccion');
   const telefonoInput = document.getElementById('solicitud-telefono');
   const instruccioesInput = document.getElementById('solicitud-instrucciones');
@@ -63,6 +65,8 @@ document.addEventListener('DOMContentLoaded', async () => {
         if (!response.ok) throw new Error('Solicitud no encontrada');
         const res = await response.json();
         solicitudData = res.solicitudSerializada;
+        console.log("solicitudData", solicitudData);
+        
         
         // Actualizar título del formulario
         formTitle.textContent = 'Editar Solicitud';
@@ -70,6 +74,7 @@ document.addEventListener('DOMContentLoaded', async () => {
 
         // Llenar campos con los datos de la solicitud
         idInput.value = solicitudData.dsoId || '';
+        UsuarioInput.value = solicitudData.usuario.usuNombre || '';
         direccionInput.value = solicitudData.dsoDireccion || '';
         telefonoInput.value = solicitudData.dsoTelefono || '';
         instruccioesInput.value = solicitudData.dsoInstrucciones || '';
@@ -77,6 +82,8 @@ document.addEventListener('DOMContentLoaded', async () => {
         const resBarrios = await fetchBarrios(solicitudData.barrio.gbrCodCiudad);        
         populateSelect(municipioSelect, listaMunicipios, solicitudData.barrio.gbrCodCiudad, 'codMcpio', 'nombreMcpio');
         populateSelect(barrioSelect, resBarrios.barrios, solicitudData.dsoCodBarrio, 'gbrCodigo', 'gbrNombre');
+        const resCentrosCostos = await fetchData('/api/centroscosto');
+        populateSelect(centrocostosSelect, resCentrosCostos.centrosCosto, solicitudData.dsoCodCentroC, 'cctCodigo', 'cctNombreCC');
       } catch (error) {
         console.error('Error al cargar datos de la solicitud:', error);
       }
@@ -95,6 +102,10 @@ document.addEventListener('DOMContentLoaded', async () => {
     // Cargar destinatarios
     const resDestinatarios = await fetchData('/api/destinatarios');
     populateSelect(destinatarioSelect, resDestinatarios.destinatarios, solicitudData?.dsoCodDestinatario, 'ddtId', 'ddtNombre');
+
+    // Cargar Centros de costos
+    const resCentrosCostos = await fetchData('/api/centroscosto');
+    populateSelect(centrocostosSelect, resCentrosCostos.centrosCosto, solicitudData?.dsoCodCentroC, 'cctCodigo', 'cctNombreCC');
 
     // Evento para cargar barrios dinámicamente
     municipioSelect.addEventListener('change', async () => {
@@ -118,6 +129,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         dsoDireccion: form.querySelector('#solicitud-direccion').value,
         dsoCodBarrio: barrioSelect.value,
         dsoTelefono: form.querySelector('#solicitud-telefono').value,
+        dsoCodCentroC: centrocostosSelect.value,
         dsoInstrucciones: form.querySelector('#solicitud-instrucciones').value,
         // dsoFchSolicitud: isEdition 
         //   ? solicitudData.dsoFchSolicitud // Usar la fecha existente en edición

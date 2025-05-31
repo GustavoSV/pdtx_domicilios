@@ -25,7 +25,7 @@ function formatearFecha(fechaISO) {
  * Obtiene la fecha y hora actual en Colombia según el formato solicitado.
  *
  * @param {string} formato - Puede ser: 'date', 'mysql', 'iso', 'string', 'dayjs'
- * @param {Date|string} [fecha=null] - Opcional: fecha a convertir a hora de Colombia
+ * @param {Date|string} [fecha=null] - dataal: fecha a convertir a hora de Colombia
  * @returns {Date|string|dayjs.Dayjs} Fecha u hora en el formato especificado
  */
 // function getColombiaDateFront(format = 'complete') {
@@ -46,7 +46,7 @@ function formatearFecha(fechaISO) {
 //     return colombiaTime;
 //   }
   
-//   // Opciones de formato según lo requerido
+//   // dataArray de formato según lo requerido
 //   switch(format) {
 //     case 'date':
 //       // Solo fecha: DD/MM/YYYY
@@ -107,16 +107,16 @@ function formatearFecha(fechaISO) {
 // };
 
 // Función para poblar selects
-const populateSelect = (select, opciones, valorInicial, valueKey = 'id', textKey = 'nombre') => {
-  if (!Array.isArray(opciones)) {
-    console.error('Error: Los datos proporcionados no son un arreglo:', opciones);
+const populateSelect = (select, dataArray, valorInicial, valueKey = 'id', textKey = 'nombre') => {
+  if (!Array.isArray(dataArray)) {
+    console.error('Error: Los datos proporcionados no son un arreglo:', dataArray);
     return;
   }
   select.innerHTML = '<option value="">Seleccione...</option>';
-  opciones.forEach(opcion => {
+  dataArray.forEach(element => {
     const opt = document.createElement('option');
-    opt.value = opcion[valueKey];
-    opt.textContent = opcion[textKey];
+    opt.value = element[valueKey];
+    opt.textContent = element[textKey];
     if (valorInicial && opt.value === valorInicial.toString()) {
       opt.selected = true;
     }

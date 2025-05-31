@@ -94,7 +94,6 @@ solicitudesRouter.get('/:id', isAuthenticated, async (req, res) => {  // /api/so
     }
     
     const solicitudSerializada = serializeBigInt(solicitud);
-
     res.json({ solicitudSerializada });
   } catch (error) {
     console.error('Error al obtener los detalles de la solicitud:', error.message);
@@ -114,6 +113,7 @@ solicitudesRouter.post('/', isAuthenticated, validateDatosRequeridosSolicitud, a
       dsoDireccion,
       dsoCodBarrio,
       dsoTelefono,
+      dsoCodCentroC,
       dsoInstrucciones,
       dsoCodEstado,
     } = req.body;
@@ -124,6 +124,7 @@ solicitudesRouter.post('/', isAuthenticated, validateDatosRequeridosSolicitud, a
       dsoDireccion,
       dsoCodBarrio,
       dsoTelefono,
+      dsoCodCentroC,
       dsoInstrucciones,
       dsoCodEstado,
       dsoFchSolicitud: getColombiaDateFormat('prisma'),
@@ -133,6 +134,26 @@ solicitudesRouter.post('/', isAuthenticated, validateDatosRequeridosSolicitud, a
     res.json(nuevaSolicitud);
   } catch (error) {
     console.error('solicitudesRouter - Error al crear la solicitud:', error.message);
+    res.status(500).json({ error: 'Error interno del servidor' });
+  }
+});
+
+// Actualizar solo el Centro de costos para una solicitud
+solicitudesRouter.put('/cc/:id', isAuthenticated, validateIdExistente, async (req, res) => {  
+  const solicitudesManager = new SolicitudesManager(prisma);
+  try {
+    const { id } = req.params;
+    const where = { dsoId: parseInt(id) }
+
+    const solicitudActualizada = await solicitudesManager.update(where, req.body);
+    if (!solicitudActualizada) {
+      return res.status(404).json({ error: 'Solicitud no encontrada' });
+    }
+    // const solicitudSerializada = serializeBigInt(solicitudActualizada);
+
+    res.json( solicitudActualizada );
+  } catch (error) {
+    console.error('Error al actualizar el Centro de costos de la solicitud:', error.message);
     res.status(500).json({ error: 'Error interno del servidor' });
   }
 });
@@ -158,7 +179,7 @@ solicitudesRouter.put('/:id', isAuthenticated, validateIdExistente, validateDato
 });
 
 // Eliminar una solicitud (API)
-solicitudesRouter.delete('/:id', isAuthenticated, validateIdExistente, async (req, res) => {  // /api/solicitudes/:id
+solicitudesRouter.delete('/:id', isAuthenticated, validateIdExistente, async (req, res) => {  
   const solicitudesManager = new SolicitudesManager(prisma);
   try {
     const { id } = req.params;

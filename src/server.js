@@ -14,6 +14,7 @@ import { destinatariosRouter } from './routes/destinatarios.routes.js';
 import { barriosRouter } from './routes/barrios.routes.js';
 import { mensajerosRouter } from './routes/mensajeros.routes.js';
 import { centroscostoRouter } from './routes/centroscosto.routes.js';
+import { reportesRouter } from './routes/reportes.routes.js';
 
 // cargar variables de entorno
 dotenv.config();
@@ -81,6 +82,7 @@ app.use("/api/destinatarios", destinatariosRouter);
 app.use("/api/barrios", barriosRouter);
 app.use("/api/mensajeros", mensajerosRouter);
 app.use("/api/centroscosto", centroscostoRouter);
+app.use("/api/reportes", reportesRouter);
 
 // Server initialization
 app.listen(port, () => {

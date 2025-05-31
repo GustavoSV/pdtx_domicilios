@@ -1,6 +1,7 @@
 import { Manager } from "./Manager.js";
 import { convertirSolicitudes } from "../utils/convertirSolicitudes.js";  // Importar la función de conversión
 import { validarRelacion } from "../utils/databaseValidators.js"; // Importar la función de validación
+import { getMonthRangeUTC } from "../utils/colombiaDateTime.js";
 
 export class SolicitudesManager extends Manager {
   constructor(db) {
@@ -23,6 +24,12 @@ export class SolicitudesManager extends Manager {
             ddtNombre: true
           }
         },
+        centroscosto: {
+          select: {
+            cctNombreCC: true,
+            cctCodUEN: true
+          }
+        },
         estado: {
           select: {
             eneEstado: true
@@ -36,12 +43,12 @@ export class SolicitudesManager extends Manager {
             dgoCodCentroC: true,
             dgoCodMensajero: true,
             dgoObservaciones: true,
-            centroscosto: {
-              select: {
-                cctNombreCC: true,
-                cctCodUEN: true
-              }
-            },
+            // centroscosto: {
+            //   select: {
+            //     cctNombreCC: true,
+            //     cctCodUEN: true
+            //   }
+            // },
             mensajero: {
               select: {
                 msjNombre: true
@@ -76,14 +83,20 @@ export class SolicitudesManager extends Manager {
             eneEstado: true
           }
         },
+        centroscosto: {
+          select: {
+            cctNombreCC: true,
+            cctCodUEN: true
+          }
+        },
         gestion: {
           include: {
-            centroscosto: {
-              select: {
-                cctNombreCC: true,
-                cctCodUEN: true
-              }
-            },
+            // centroscosto: {
+            //   select: {
+            //     cctNombreCC: true,
+            //     cctCodUEN: true
+            //   }
+            // },
             mensajero: {
               select: {
                 msjNombre: true
@@ -105,6 +118,11 @@ export class SolicitudesManager extends Manager {
         dsoId: parseInt(id)
       },
       { // include
+        usuario: {
+          select: {
+            usuNombre: true
+          }
+        },
         destinatario: {
           select: {
             ddtNombre: true
@@ -126,6 +144,12 @@ export class SolicitudesManager extends Manager {
             gbrCodCiudad: true
           }
         },
+        centroscosto: {
+          select: {
+            cctNombreCC: true,
+            cctCodUEN: true
+          }
+        },
         gestion: {
           select: {
             dgoValor: true,
@@ -134,12 +158,12 @@ export class SolicitudesManager extends Manager {
             dgoCodCentroC: true,
             dgoCodMensajero: true,
             dgoObservaciones: true,
-            centroscosto: {
-              select: {
-                cctNombreCC: true,
-                cctCodUEN: true
-              }
-            },
+            // centroscosto: {
+            //   select: {
+            //     cctNombreCC: true,
+            //     cctCodUEN: true
+            //   }
+            // },
             mensajero: {
               select: {
                 msjNombre: true
@@ -197,6 +221,12 @@ export class SolicitudesManager extends Manager {
               dacDescripcion: true
             }
           },
+          centroscosto: {
+            select: {
+              cctNombreCC: true,
+              cctCodUEN: true
+            }
+          },
           estado: {
             select: {
               eneEstado: true
@@ -210,12 +240,12 @@ export class SolicitudesManager extends Manager {
               dgoCodCentroC: true,
               dgoCodMensajero: true,
               dgoObservaciones: true,
-              centroscosto: {
-                select: {
-                  cctNombreCC: true,
-                  cctCodUEN: true
-                }
-              },
+              // centroscosto: {
+              //   select: {
+              //     cctNombreCC: true,
+              //     cctCodUEN: true
+              //   }
+              // },
               mensajero: {
                 select: {
                   msjNombre: true
@@ -235,7 +265,70 @@ export class SolicitudesManager extends Manager {
       console.error('Error al obtener las solicitudes del usuario:', error.message);
       throw error;
     }
+  };
+
+  // Obtener los datos de los reportes
+  async getDomiciliosPorUsuario(mes, anio) {
+    const { startDate, endDate } = getMonthRangeUTC(mes, anio);
+
+    try {
+      const result = await this.prisma.$queryRaw`
+        SELECT 
+          gen_usuarios.usuNombre AS nombre,
+          SUM(dom_gestion.dgoValor) AS valorTotal
+        FROM 
+          dom_solicitudes
+        INNER JOIN 
+          gen_usuarios ON dom_solicitudes.dsoCodUsuario = gen_usuarios.usuId
+        INNER JOIN 
+          dom_gestion ON dom_solicitudes.dsoId = dom_gestion.dgoCodSolicitud
+        WHERE 
+          dom_solicitudes.dsoFchSolicitud BETWEEN ${startDate} AND ${endDate}
+          AND dom_gestion.dgoValor IS NOT NULL
+        GROUP BY 
+          gen_usuarios.usuNombre
+        ORDER BY 
+          gen_usuarios.usuNombre ASC
+      `;
+      console.log('SolicitudesManager - getDomiciliosPorUsuario - datos:', result);
+      
+      return result
+    } catch (error) {
+      console.error('SolicitudesManager - getDomiciliosPorUsuario:', error.message);
+      throw error;
+    }
+    ;
+  };
+
+async getValoresPorCentrosCostos(mes, anio) {
+  const { startDate, endDate } = getMonthRangeUTC(mes, anio);
+  try {
+    const result = await this.prisma.$queryRaw`
+      SELECT 
+        con_centroscosto.cctNombreCC AS nombre, 
+        SUM(dom_gestion.dgoValor) + SUM(dom_gestion.dgoVrAdicional) AS valorTotal
+      FROM 
+        con_centroscosto
+      INNER JOIN 
+        dom_solicitudes ON con_centroscosto.cctCodigo = dom_solicitudes.dsoCodCentroC
+      INNER JOIN 
+        dom_gestion ON dom_solicitudes.dsoId = dom_gestion.dgoId
+      WHERE 
+        dom_gestion.dgoFchEntrega BETWEEN ${startDate} AND ${endDate}
+      GROUP BY 
+        dom_gestion.dgoCodCentroC
+      ORDER BY
+        con_centroscosto.cctNombreCC ASC;
+    `;
+    console.log('SolicitudesManager - getValoresPorCentrosCostos - datos:', result);
+    
+    return result
+  } catch (error) {
+    console.error('SolicitudesManager - getValoresPorCentrosCostos:', error.message);
+    throw error;
   }
+  ;
+};
 
   // Crear una nueva solicitud
   async postNuevaSolicitud(data, userId) {
@@ -250,9 +343,10 @@ export class SolicitudesManager extends Manager {
       await validarRelacion(this.prisma, 'dom_actividades', 'dacCodigo', data.dsoCodActividad, contextInfo);
       await validarRelacion(this.prisma, 'dom_destinatarios', 'ddtId', data.dsoCodDestinatario, contextInfo);
       await validarRelacion(this.prisma, 'gen_barrios', 'gbrCodigo', data.dsoCodBarrio, contextInfo);
+      await validarRelacion(this.prisma, 'con_centroscosto', 'cctCodigo', data.dsoCodCentroC, contextInfo);
       await validarRelacion(this.prisma, 'enum_estados', 'eneCodigo', data.dsoCodEstado, contextInfo);
-
-      // Construir el objeto de datos con las relaciones usuario, destinatario, barrio, actividad, estado usando CONNECT
+      
+      // Construir el objeto de datos con las relaciones usuario, destinatario, barrio, actividad, centro de costos, estado usando CONNECT
       const recordData = {
         usuario: {
           connect: { usuId: parseInt(userId) }, // Conectar con el usuario existente
@@ -265,6 +359,9 @@ export class SolicitudesManager extends Manager {
         },
         barrio: {
           connect: { gbrCodigo: data.dsoCodBarrio }, // Conectar con el barrio existente
+        },
+        centroscosto: {
+          connect: { cctCodigo: data.dsoCodCentroC }, // Conectar con el barrio existente
         },
         estado: {
           connect: { eneCodigo: data.dsoCodEstado }, // Conectar con el estado existente
@@ -287,7 +384,7 @@ export class SolicitudesManager extends Manager {
     }
   }
 
-  // Manejo de las solcitudes provenientes de la GESTION
+  // Manejo de las solicitudes provenientes de la GESTION
   async getGestionSolicitudesRecientes() { 
     const recientes = await this.getAllSelect(
       { // select
@@ -301,6 +398,7 @@ export class SolicitudesManager extends Manager {
         dsoCodActividad: true,
         dsoCodDestinatario: true,
         dsoCodBarrio: true,
+        dsoCodCentroC: true,
 
         usuario: {
           select: {
@@ -317,6 +415,12 @@ export class SolicitudesManager extends Manager {
           select: {
             gbrNombre: true,
             gbrCodCiudad: true
+          }
+        },
+        centroscosto: {
+          select: {
+            cctNombreCC: true,
+            cctCodUEN: true
           }
         },
         estado: {
@@ -356,6 +460,11 @@ export class SolicitudesManager extends Manager {
         OR: [
           { dsoId: isNumeric(searchTerm) ? { equals: parseInt(searchTerm) } : undefined },
           { 
+            usuario: {
+              usuNombre: { contains: searchTerm },
+            }
+          },
+          { 
             destinatario: {
               ddtNombre: { contains: searchTerm },
             }
@@ -363,6 +472,11 @@ export class SolicitudesManager extends Manager {
           {
             actividad: {
               dacDescripcion: { contains: searchTerm }, 
+            },
+          },
+          {
+            centroscosto: {
+              cctNombreCC: { contains: searchTerm }, 
             },
           },
           {
@@ -398,6 +512,12 @@ export class SolicitudesManager extends Manager {
               dacDescripcion: true
             }
           },
+          centroscosto: {
+            select: {
+              cctNombreCC: true,
+              cctCodUEN: true
+            }
+          },
           estado: {
             select: {
               eneEstado: true
@@ -408,15 +528,15 @@ export class SolicitudesManager extends Manager {
               dgoValor: true,
               dgoVrAdicional: true,
               dgoFchEntrega: true,
-              dgoCodCentroC: true,
+              // dgoCodCentroC: true,
               dgoCodMensajero: true,
               dgoObservaciones: true,
-              centroscosto: {
-                select: {
-                  cctNombreCC: true,
-                  cctCodUEN: true
-                }
-              },
+              // centroscosto: {
+              //   select: {
+              //     cctNombreCC: true,
+              //     cctCodUEN: true
+              //   }
+              // },
               mensajero: {
                 select: {
                   msjNombre: true
@@ -470,6 +590,12 @@ export class SolicitudesManager extends Manager {
             gbrCodCiudad: true
           }
         },
+        centroscosto: {
+          select: {
+            cctNombreCC: true,
+            cctCodUEN: true
+          }
+        },
         gestion: {
           select: {
             dgoId: true,
@@ -479,12 +605,12 @@ export class SolicitudesManager extends Manager {
             dgoCodCentroC: true,
             dgoCodMensajero: true,
             dgoObservaciones: true,
-            centroscosto: {
-              select: {
-                cctNombreCC: true,
-                cctCodUEN: true
-              }
-            },
+            // centroscosto: {
+            //   select: {
+            //     cctNombreCC: true,
+            //     cctCodUEN: true
+            //   }
+            // },
             mensajero: {
               select: {
                 msjNombre: true
